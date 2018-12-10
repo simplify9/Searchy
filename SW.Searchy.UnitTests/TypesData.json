@@ -1,0 +1,81 @@
+[
+  {
+    "Id": 1,
+    "RepositoryId": 32,
+    "Name": "Unspecified",
+    "RetentionPeriod": null
+  },
+  {
+    "Id": 2,
+    "RepositoryId": 33,
+    "Name": "Unspecified",
+    "RetentionPeriod": null
+  },
+  {
+    "Id": 3,
+    "RepositoryId": 34,
+    "Name": "Unspecified",
+    "RetentionPeriod": null
+  },
+  {
+    "Id": 4,
+    "RepositoryId": 35,
+    "Name": "Unspecified",
+    "RetentionPeriod": null
+  }
+  //,
+  //{
+  //  "Id": 5,
+  //  "RepositoryId": 36,
+  //  "Name": "Unspecified",
+  //  "RetentionPeriod": null
+  //},
+  //{
+  //  "Id": 6,
+  //  "RepositoryId": 41,
+  //  "Name": "Unspecified",
+  //  "RetentionPeriod": null
+  //},
+  //{
+  //  "Id": 7,
+  //  "RepositoryId": 42,
+  //  "Name": "Unspecified",
+  //  "RetentionPeriod": null
+  //},
+  //{
+  //  "Id": 8,
+  //  "RepositoryId": 43,
+  //  "Name": "Unspecified",
+  //  "RetentionPeriod": null
+  //},
+  //{
+  //  "Id": 9,
+  //  "RepositoryId": 44,
+  //  "Name": "Unspecified",
+  //  "RetentionPeriod": null
+  //},
+  //{
+  //  "Id": 10,
+  //  "RepositoryId": 45,
+  //  "Name": "Unspecified",
+  //  "RetentionPeriod": null
+  //},
+  //{
+  //  "Id": 11,
+  //  "RepositoryId": 58,
+  //  "Name": "Unspecified",
+  //  "RetentionPeriod": null
+  //},
+  //{
+  //  "Id": 12,
+  //  "RepositoryId": 65,
+  //  "Name": "Unspecified",
+  //  "RetentionPeriod": null
+  //},
+  //{
+  //  "Id": 13,
+  //  "RepositoryId": 67,
+  //  "Name": "Unspecified",
+  //  "RetentionPeriod": null
+  //}
+]

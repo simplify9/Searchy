@@ -1,0 +1,8 @@
+[
+  {
+    "Id": 1,
+    "Name": "Azure",
+    "Active": 1,
+    "Path": "DefaultEndpointsProtocol=https;AccountName=dmsstoragedev;AccountKey=sTSTQerVEURahD9/nLFzdCyduKjgs6lT/W8hlxezlNlFKj1RPXndXQvBKoKOwNQ+koYnEwBkEppC6pvkUwThtg==;EndpointSuffix=core.windows.net"
+  }
+]
