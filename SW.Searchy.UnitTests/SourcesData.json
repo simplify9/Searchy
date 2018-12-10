@@ -7,7 +7,7 @@
     "MustProvideType": 0,
     "DuplicateFilePolicy": 1,
     "RetentionPeriod": 0,
-    "MaxDocSize": 5000,
+    "MaxDocSize": 1000,
     "Path": "",
     "MaxDocsNumber": 0
   },
@@ -19,7 +19,7 @@
     "MustProvideType": 0,
     "DuplicateFilePolicy": 1,
     "RetentionPeriod": 0,
-    "MaxDocSize": 5000,
+    "MaxDocSize": 2000,
     "Path": "",
     "MaxDocsNumber": 0
   },
@@ -31,7 +31,7 @@
     "MustProvideType": 0,
     "DuplicateFilePolicy": 1,
     "RetentionPeriod": 0,
-    "MaxDocSize": 5000,
+    "MaxDocSize": 2000,
     "Path": "",
     "MaxDocsNumber": 0
   },

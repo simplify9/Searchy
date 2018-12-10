@@ -75,6 +75,34 @@ namespace SW.Searchy.UnitTests
 
         }
 
+        [TestMethod]
+        public void SearchyWithAndFilter()
+        {
+            SearchQuery _sq = new SearchQuery();
+            List<FilterByOptions> _fol = new List<FilterByOptions>();
+            _fol.Add(new FilterByOptions { FilterFor = "Files", FilterOperator = FilterByOptions.FilterOperatorOptions.Contains, MemberName = "Name" });
+            _fol.Add(new FilterByOptions { FilterFor = 2000, FilterOperator = FilterByOptions.FilterOperatorOptions.EqualsTo, MemberName = "MaxDocSize" });
+
+            SearchCondition _sc = new SearchCondition(_fol);
+            _sq.Conditions.Add(_sc);
+
+            var _data = _context.UseDms().Repositories.Search(_sq).ToList();
+
+
+        }
+
+        [TestMethod]
+        public void SearchyWithOrFilter()
+        {
+            SearchQuery _sq = new SearchQuery();
+            SearchCondition _sc = new SearchCondition(new FilterByOptions { FilterFor = "Files", FilterOperator = FilterByOptions.FilterOperatorOptions.Contains, MemberName = "Name" });
+            _sq.Conditions.Add(_sc);
+            SearchCondition _sc2 = new SearchCondition(new FilterByOptions { FilterFor = 2000, FilterOperator = FilterByOptions.FilterOperatorOptions.EqualsTo, MemberName = "MaxDocSize" });
+
+            var _data = _context.UseDms().Repositories.Search(_sq).ToList();
+
+        }
+
         public void Dispose()
         {
             _context.Dispose();
