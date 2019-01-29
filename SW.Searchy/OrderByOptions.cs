@@ -2,7 +2,7 @@
 
 namespace SW.Searchy
 {
-    [Serializable()]
+
     public class OrderByOptions
     {
         public enum Order
@@ -11,52 +11,15 @@ namespace SW.Searchy
             DEC = 2
         }
 
+        public string MemberName { get; set; }
 
-        private string _MemberName;
+        public Order SortOrder { get; set; }
 
-        public string MemberName
+
+        public OrderByOptions(string memberName, Order sortOrder)
         {
-            get
-            {
-                return _MemberName;
-            }
-            set
-            {
-                _MemberName = value;
-            }
-        }
-
-
-        // Private _MemberType As System.Type
-        // Public Property MemberType() As Type
-        // Get
-        // Return _MemberType
-        // End Get
-        // Set(ByVal value As Type)
-        // _MemberType = value
-        // End Set
-        // End Property
-
-
-        private Order _SortOrder;
-
-        public Order SortOrder
-        {
-            get
-            {
-                return _SortOrder;
-            }
-            set
-            {
-                _SortOrder = value;
-            }
-        }
-
-        public OrderByOptions(string MemberName, Order SortOrder)
-        {
-            _MemberName = MemberName;
-            // _MemberType = MemberType
-            _SortOrder = SortOrder;
+            MemberName = memberName;
+            SortOrder = sortOrder;
         }
 
         public OrderByOptions()

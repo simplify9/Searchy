@@ -6,18 +6,20 @@ namespace SW.Searchy
     {
         public ICollection<SearchCondition> Conditions { get; set; } = new List<SearchCondition>();
 
+
+
         public SearchQuery()
         {
         }
 
         public SearchQuery(SearchCondition SearchCondition)
         {
-            this.Conditions.Add(SearchCondition);
+            Conditions.Add(SearchCondition);
         }
 
         public SearchQuery(FilterByOptions FilterByOptions)
         {
-            this.Conditions.Add(new SearchCondition(FilterByOptions));
+            Conditions.Add(new SearchCondition(FilterByOptions));
         }
 
         public SearchQuery Exclude(string[] StartingWith)
