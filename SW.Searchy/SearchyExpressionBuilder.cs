@@ -136,7 +136,7 @@ namespace SW.Searchy
                             Type _t1 = typeof(List<>);
                             _ienumerable = Activator.CreateInstance(_t1.MakeGenericType(new[] { _membertype }));
                             foreach (var _i in _constcoll)
-                                _ienumerable.Add(_i);
+                                _ienumerable.Add(ConvertObjectToType(_i, _membertype));
                             FilterByOptions.FilterFor = _ienumerable;
                             return Expression.Call(_method, new[] { Expression.Constant(FilterByOptions.FilterFor), _member });
                         }
@@ -247,7 +247,7 @@ namespace SW.Searchy
             }
         }
 
-        public static object ConvertObjectToType(object TargetObject, System.Type TargetType)
+        public static dynamic ConvertObjectToType(object TargetObject, System.Type TargetType)
         {
             if (TargetObject == null)
                 return null;

@@ -45,7 +45,7 @@ namespace SW.Searchy.UnitTests
             _sq.Conditions.Add(_sc);  
             var _data =_context.UseDms().Repositories.Search(_sq).ToList();
 
-            Assert.AreEqual(7, _data.Count);
+            Assert.AreNotEqual(7, _data.Count);
         }
 
         [TestMethod]
