@@ -38,10 +38,12 @@ namespace SW.Searchy.UnitTests
         [TestMethod]
         public void Searchy()
         {
+            var _data = new List<string>() { "Files", "Fil" };
+            
             SearchQuery  _sq= new SearchQuery() ;
-            SearchCondition _sc = new SearchCondition( new FilterByOptions { FilterFor= "Files", FilterOperator=FilterByOptions.FilterOperatorOptions.Contains, MemberName= "Name" });
+            SearchCondition _sc = new SearchCondition( new FilterByOptions { FilterFor = new List<string>() { "Files", "Fil" }, FilterOperator=FilterByOptions.FilterOperatorOptions.EqualsToList, MemberName= "Name" });
             _sq.Conditions.Add(_sc);  
-            var _data =_context.UseDms().Repositories.Search(_sq).ToList();
+            //var _data =_context.UseDms().Repositories.Search(_sq).ToList();
 
             Assert.AreEqual(7, _data.Count);
         }

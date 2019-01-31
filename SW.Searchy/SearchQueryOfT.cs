@@ -9,7 +9,7 @@ namespace SW.Searchy
     public class SearchQuery<TEntity> : SearchQuery
     {
 
-        public ICollection< OrderByOptions> Order { get; set; }
+        public ICollection< OrderByOptions> Order { get; set; } = new List<OrderByOptions>();
 
         public Paging Paging { get; set; }
 
