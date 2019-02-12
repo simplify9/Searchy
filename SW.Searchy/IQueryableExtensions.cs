@@ -59,22 +59,22 @@ namespace SW.Searchy
             return Target;
         }
 
-        //public static IQueryable<TEntity> SearchMany<TEntity, TEntityMany>(this IQueryable<TEntity> Target, string NavigationProperty, SearchQuery SearchQuery)
-        //{
-        //    var _param = Expression.Parameter(typeof(TEntity), "TEntity");
-        //    ParameterExpression _parammany = Expression.Parameter(typeof(TEntityMany), "TEntityMany");
-        //    Expression _finalexp = SearchyExpressionBuilder.BuildSearchExpression<TEntityMany>(_parammany, SearchQuery.Conditions);
+        public static IQueryable<TEntity> SearchMany<TEntity, TEntityMany>(this IQueryable<TEntity> Target, string NavigationProperty, SearchQuery SearchQuery)
+        {
+            var _param = Expression.Parameter(typeof(TEntity), "TEntity");
+            ParameterExpression _parammany = Expression.Parameter(typeof(TEntityMany), "TEntityMany");
+            Expression _finalexp = SearchyExpressionBuilder.BuildSearchExpression<TEntityMany>(_parammany, SearchQuery.Conditions);
 
-        //    if (_finalexp != null)
-        //    {
-        //        var _methodany = typeof(Enumerable).GetMethods().Where(m => m.Name == "Any" & m.GetParameters().Length == 2).Single().MakeGenericMethod(typeof(TEntityMany));
-        //        var _innerfunction = Expression.Lambda<Func<TEntityMany, bool>>(_finalexp, _parammany);
-        //        var _finalwhereexp = Expression.Lambda<Func<TEntity, bool>>(Expression.Call(_methodany, Expression.Property(_param, typeof(TEntity).GetProperty(NavigationProperty, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance)), _innerfunction), new ParameterExpression[] { _param });
-        //        Target = Target.Where(_finalwhereexp);
-        //    }
+            if (_finalexp != null)
+            {
+                var _methodany = typeof(Enumerable).GetMethods().Where(m => m.Name == "Any" & m.GetParameters().Length == 2).Single().MakeGenericMethod(typeof(TEntityMany));
+                var _innerfunction = Expression.Lambda<Func<TEntityMany, bool>>(_finalexp, _parammany);
+                var _finalwhereexp = Expression.Lambda<Func<TEntity, bool>>(Expression.Call(_methodany, Expression.Property(_param, typeof(TEntity).GetProperty(NavigationProperty, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance)), _innerfunction), new ParameterExpression[] { _param });
+                Target = Target.Where(_finalwhereexp);
+            }
 
-        //    return Target;
-        //}
+            return Target;
+        }
 
 
     }
