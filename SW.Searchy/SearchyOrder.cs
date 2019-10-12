@@ -3,7 +3,7 @@
 namespace SW.Searchy
 {
 
-    public class OrderByOptions
+    public class SearchyOrder
     {
         public enum Order
         {
@@ -16,13 +16,13 @@ namespace SW.Searchy
         public Order SortOrder { get; set; }
 
 
-        public OrderByOptions(string memberName, Order sortOrder)
+        public SearchyOrder(string memberName, Order sortOrder)
         {
             MemberName = memberName;
             SortOrder = sortOrder;
         }
 
-        public OrderByOptions()
+        public SearchyOrder()
         {
         }
     }

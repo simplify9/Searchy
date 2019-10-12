@@ -2,46 +2,46 @@
 
 namespace SW.Searchy
 {
-    public class SearchQuery
+    public class SearchyQuery
     {
-        public ICollection<SearchCondition> Conditions { get; set; } = new List<SearchCondition>();
+        public ICollection<SearchyConditon> Conditions { get; set; } = new List<SearchyConditon>();
 
 
 
-        public SearchQuery()
+        public SearchyQuery()
         {
         }
 
-        public SearchQuery(SearchCondition SearchCondition)
+        public SearchyQuery(SearchyConditon SearchCondition)
         {
             Conditions.Add(SearchCondition);
         }
 
-        public SearchQuery(FilterByOptions FilterByOptions)
+        public SearchyQuery(SearchyFilter FilterByOptions)
         {
-            Conditions.Add(new SearchCondition(FilterByOptions));
+            Conditions.Add(new SearchyConditon(FilterByOptions));
         }
 
-        public SearchQuery Exclude(string[] StartingWith)
+        public SearchyQuery Exclude(string[] StartingWith)
         {
-            var _sq = new SearchQuery();
+            var _sq = new SearchyQuery();
             foreach (var _c in this.Conditions)
                 _sq.Conditions.Add(_c.Exclude(StartingWith));
             return _sq;
         }
 
-        public SearchQuery Keep(string[] StartingWith, bool RemoveStartingWith = true)
+        public SearchyQuery Keep(string[] StartingWith, bool RemoveStartingWith = true)
         {
-            var _sq = new SearchQuery();
+            var _sq = new SearchyQuery();
             foreach (var _c in this.Conditions)
                 _sq.Conditions.Add(_c.Keep(StartingWith, RemoveStartingWith));
             return _sq;
         }
 
 
-        public SearchQuery Merge(SearchQuery SourceSearchQuery)
+        public SearchyQuery Merge(SearchyQuery SourceSearchQuery)
         {
-            var _result = new SearchQuery();
+            var _result = new SearchyQuery();
 
             foreach (var _cd in this.Conditions)
             {
@@ -49,7 +49,7 @@ namespace SW.Searchy
                 {
                     foreach (var _cs in SourceSearchQuery.Conditions)
                     {
-                        var _newcd = new SearchCondition(_cd.Criteria);
+                        var _newcd = new SearchyConditon(_cd.Criteria);
                         _result.Conditions.Add(_newcd);
                         foreach (var _fo in _cs.Criteria)
                             _newcd.Criteria.Add(_fo);
@@ -57,7 +57,7 @@ namespace SW.Searchy
                 }
                 else
                 {
-                    var _newcd = new SearchCondition(_cd.Criteria);
+                    var _newcd = new SearchyConditon(_cd.Criteria);
                     _result.Conditions.Add(_newcd);
                 }
             }

@@ -11,29 +11,39 @@ namespace SW.Searchy
     public static class IQueryableExtensions
 
     {
-        public static IQueryable<TEntity> Search<TEntity>(this IQueryable<TEntity> Target, string FindMember, FilterByOptions.FilterOperatorOptions SearchOperator, object WithValue)
+        public static IQueryable<TEntity> Search<TEntity>(this IQueryable<TEntity> Target, 
+            string FindMember, 
+            SearchyOperator SearchOperator, 
+            object WithValue)
         {
-            return Search(Target, new SearchQuery(new FilterByOptions(FindMember, SearchOperator, WithValue)));
+            return Search(Target, new SearchyQuery(new SearchyFilter(FindMember, SearchOperator, WithValue)));
         }
 
-        public static IQueryable<TEntity> Search<TEntity>(this IQueryable<TEntity> Target, string FindMember, object WithValueEquals)
+        public static IQueryable<TEntity> Search<TEntity>(this IQueryable<TEntity> Target, 
+            string FindMember,
+            object WithValueEquals)
         {
-            return Search(Target, new SearchQuery(new FilterByOptions(FindMember, FilterByOptions.FilterOperatorOptions.EqualsTo, WithValueEquals)));
+            return Search(Target, new SearchyQuery(new SearchyFilter(FindMember, SearchyOperator.EqualsTo, WithValueEquals)));
         }
 
-        public static IQueryable<TEntity> Search<TEntity>(this IQueryable<TEntity> Target, SearchCondition SearchCondition)
+        public static IQueryable<TEntity> Search<TEntity>(this IQueryable<TEntity> Target, 
+            SearchyConditon SearchCondition)
         {
-            return Search(Target, new SearchQuery(SearchCondition));
+            return Search(Target, new SearchyQuery(SearchCondition));
         }
 
-        public static IQueryable<TEntity> Search<TEntity>(this IQueryable<TEntity> Target, SearchQuery SearchQuery, IEnumerable<OrderByOptions> OrderByList = null, int PageSize = 0, int PageIndex = 0)
+        public static IQueryable<TEntity> Search<TEntity>(this IQueryable<TEntity> Target, 
+            SearchyQuery SearchQuery, 
+            IEnumerable<SearchyOrder> OrderByList = null, 
+            int PageSize = 0, 
+            int PageIndex = 0)
         {
             var _param = Expression.Parameter(typeof(TEntity), "TEntity");
-            Expression _finalexp = SearchyExpressionBuilder.BuildSearchExpression<TEntity>(_param, SearchQuery.Conditions);
+            Expression finalexp = SearchyExpressionBuilder.BuildSearchExpression<TEntity>(_param, SearchQuery.Conditions);
 
-            if (_finalexp != null)
+            if (finalexp != null)
             {
-                var _finalwhereexp = Expression.Lambda<Func<TEntity, bool>>(_finalexp, _param);
+                var _finalwhereexp = Expression.Lambda<Func<TEntity, bool>>(finalexp, _param);
                 Target = Target.Where(_finalwhereexp);
             }
 
@@ -42,7 +52,7 @@ namespace SW.Searchy
                 var _MainOrderBy = OrderByList.FirstOrDefault();
                 Type _MainSortMemberType = typeof(TEntity).GetProperty(_MainOrderBy.MemberName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance).PropertyType;
                 SearchyExpressionBuilder.BuildOrderByThenBy(_MainOrderBy, _MainSortMemberType, ref Target, true);
-                List<OrderByOptions> _EOO = new List<OrderByOptions>();
+                List<SearchyOrder> _EOO = new List<SearchyOrder>();
                 _EOO.Add(_MainOrderBy);
                 foreach (var _OO in OrderByList.Except(_EOO.AsEnumerable()))
                 {
@@ -59,7 +69,9 @@ namespace SW.Searchy
             return Target;
         }
 
-        public static IQueryable<TEntity> SearchMany<TEntity, TEntityMany>(this IQueryable<TEntity> Target, string NavigationProperty, SearchQuery SearchQuery)
+        public static IQueryable<TEntity> SearchMany<TEntity, TEntityMany>(this IQueryable<TEntity> Target, 
+            string NavigationProperty, 
+            SearchyQuery SearchQuery)
         {
             var _param = Expression.Parameter(typeof(TEntity), "TEntity");
             ParameterExpression _parammany = Expression.Parameter(typeof(TEntityMany), "TEntityMany");

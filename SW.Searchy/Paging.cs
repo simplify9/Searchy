@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SW.Searchy
 {
-    public class Paging
+    internal class Paging
     {
         public int PageSize { get; set; }
 

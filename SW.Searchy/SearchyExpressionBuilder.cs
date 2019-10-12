@@ -10,7 +10,7 @@ namespace SW.Searchy
 {
     internal static class SearchyExpressionBuilder
     {
-        public static Expression BuildSearchExpression<TEntity>(Expression Parameter, IEnumerable<SearchCondition> SearchConditions)
+        public static Expression BuildSearchExpression<TEntity>(Expression Parameter, IEnumerable<SearchyConditon> SearchConditions)
         {
             Expression _finalexp2 = null;
             int _counter2 = 0;
@@ -39,7 +39,7 @@ namespace SW.Searchy
             return _finalexp2;
         }
 
-        public static Expression BuildInnerExpression<TEntity>(Expression Parameter, FilterByOptions FilterByOptions)
+        public static Expression BuildInnerExpression<TEntity>(Expression Parameter, SearchyFilter FilterByOptions)
         {
             Expression _member = null;
             Type _membertype = null;
@@ -61,31 +61,31 @@ namespace SW.Searchy
                 _membertype = typeof(TEntity).GetProperty(FilterByOptions.MemberName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance).PropertyType;
             }
 
-            Expression _condition = null;
-            Expression _constant = null;
+            //Expression _condition = null;
+            Expression constant = null;
 
             var _constcoll = FilterByOptions.FilterFor as ICollection;
             if (_constcoll == null)
             {
-                _constant = Expression.Constant(ConvertObjectToType(FilterByOptions.FilterFor, _membertype));
-                _constant = Expression.Convert(_constant, _membertype);
+                constant = Expression.Constant(ConvertObjectToType(FilterByOptions.FilterFor, _membertype));
+                constant = Expression.Convert(constant, _membertype);
             }
 
             switch (FilterByOptions.FilterOperator)
             {
-                case FilterByOptions.FilterOperatorOptions.BeginsWith:
-                case FilterByOptions.FilterOperatorOptions.Contains:
+                case SearchyOperator.BeginsWith:
+                case SearchyOperator.Contains:
                     {
                         string _method = "";
                         switch (FilterByOptions.FilterOperator)
                         {
-                            case FilterByOptions.FilterOperatorOptions.BeginsWith:
+                            case SearchyOperator.BeginsWith:
                                 {
                                     _method = "StartsWith";
                                     break;
                                 }
 
-                            case FilterByOptions.FilterOperatorOptions.Contains:
+                            case SearchyOperator.Contains:
                                 {
                                     _method = "Contains";
                                     break;
@@ -96,37 +96,37 @@ namespace SW.Searchy
                         return Expression.Call(_member, method, Expression.Constant(FilterByOptions.FilterFor, FilterByOptions.FilterFor.GetType()));
                     }
 
-                case FilterByOptions.FilterOperatorOptions.EqualsTo:
+                case SearchyOperator.EqualsTo:
                     {
-                        return Expression.Equal(_member, _constant);
+                        return Expression.Equal(_member, constant);
                     }
 
-                case FilterByOptions.FilterOperatorOptions.NotEqualsTo:
+                case SearchyOperator.NotEqualsTo:
                     {
-                        return Expression.NotEqual(_member, _constant);
+                        return Expression.NotEqual(_member, constant);
                     }
 
-                case FilterByOptions.FilterOperatorOptions.LessThan:
+                case SearchyOperator.LessThan:
                     {
-                        return Expression.LessThan(_member, _constant);
+                        return Expression.LessThan(_member, constant);
                     }
 
-                case FilterByOptions.FilterOperatorOptions.LessThanOrEquals:
+                case SearchyOperator.LessThanOrEquals:
                     {
-                        return Expression.LessThanOrEqual(_member, _constant);
+                        return Expression.LessThanOrEqual(_member, constant);
                     }
 
-                case FilterByOptions.FilterOperatorOptions.GreaterThan:
+                case SearchyOperator.GreaterThan:
                     {
-                        return Expression.GreaterThan(_member, _constant);
+                        return Expression.GreaterThan(_member, constant);
                     }
 
-                case FilterByOptions.FilterOperatorOptions.GreaterThanOrEquals:
+                case SearchyOperator.GreaterThanOrEquals:
                     {
-                        return Expression.GreaterThanOrEqual(_member, _constant);
+                        return Expression.GreaterThanOrEqual(_member, constant);
                     }
 
-                case FilterByOptions.FilterOperatorOptions.EqualsToList:
+                case SearchyOperator.EqualsToList:
                     {
                         if (_constcoll.Count > 0)
                         {
@@ -142,37 +142,35 @@ namespace SW.Searchy
                         }
                         else
                             return null;
-                        break;
                     }
 
                 default:
                     {
                         throw new NotImplementedException();
-                        break;
                     }
             }
         }
 
-        public static void BuildOrderBy<U, TEntity>(OrderByOptions OO, ref IQueryable<TEntity> Query)
+        public static void BuildOrderBy<U, TEntity>(SearchyOrder OO, ref IQueryable<TEntity> Query)
         {
             ParameterExpression pe = Expression.Parameter(typeof(TEntity), "");
-            if (OO.SortOrder == OrderByOptions.Order.ASC)
+            if (OO.SortOrder == SearchyOrder.Order.ASC)
                 Query = Query.OrderBy(Expression.Lambda<Func<TEntity, U>>(Expression.Property(pe, OO.MemberName), new ParameterExpression[] { pe }));
             else
                 Query = Query.OrderByDescending(Expression.Lambda<Func<TEntity, U>>(Expression.Property(pe, OO.MemberName), new ParameterExpression[] { pe }));
         }
 
-        public static void BuildThenBy<U, TEntity>(OrderByOptions OO, ref IQueryable<TEntity> Query)
+        public static void BuildThenBy<U, TEntity>(SearchyOrder OO, ref IQueryable<TEntity> Query)
         {
             ParameterExpression pe = Expression.Parameter(typeof(TEntity), "");
             IOrderedQueryable<TEntity> OrderedQuery = (IOrderedQueryable<TEntity>)Query;
-            if (OO.SortOrder == OrderByOptions.Order.ASC)
+            if (OO.SortOrder == SearchyOrder.Order.ASC)
                 Query = OrderedQuery.ThenBy(Expression.Lambda<Func<TEntity, U>>(Expression.Property(pe, OO.MemberName), new ParameterExpression[] { pe }));
             else
                 Query = OrderedQuery.ThenByDescending(Expression.Lambda<Func<TEntity, U>>(Expression.Property(pe, OO.MemberName), new ParameterExpression[] { pe }));
         }
 
-        public static void BuildOrderByThenBy<TEntity>(OrderByOptions OO, Type Type, ref IQueryable<TEntity> Query, bool IsMainOrderBy)
+        public static void BuildOrderByThenBy<TEntity>(SearchyOrder OO, Type Type, ref IQueryable<TEntity> Query, bool IsMainOrderBy)
         {
             switch (true)
             {
@@ -328,7 +326,6 @@ namespace SW.Searchy
                 default:
                     {
                         throw new Exception("Unsupported type conversion.");
-                        break;
                     }
             }
             return null;

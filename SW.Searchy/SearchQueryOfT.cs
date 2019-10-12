@@ -6,10 +6,10 @@ using System.Reflection;
 
 namespace SW.Searchy
 {
-    public class SearchQuery<TEntity> : SearchQuery
+    internal class SearchQuery<TEntity> : SearchyQuery
     {
 
-        public ICollection< OrderByOptions> Order { get; set; } = new List<OrderByOptions>();
+        public ICollection< SearchyOrder> Order { get; set; } = new List<SearchyOrder>();
 
         public Paging Paging { get; set; }
 
@@ -17,14 +17,14 @@ namespace SW.Searchy
         {
         }
 
-        public SearchQuery(SearchCondition SearchCondition)
+        public SearchQuery(SearchyConditon SearchCondition)
         {
             Conditions.Add(SearchCondition);
         }
 
-        public SearchQuery(FilterByOptions FilterByOptions)
+        public SearchQuery(SearchyFilter FilterByOptions)
         {
-            Conditions.Add(new SearchCondition(FilterByOptions));
+            Conditions.Add(new SearchyConditon(FilterByOptions));
         }
 
         public IQueryable<TEntity> Apply(IQueryable<TEntity> queryable)
@@ -43,7 +43,7 @@ namespace SW.Searchy
                 var _MainOrderBy = Order.FirstOrDefault();
                 Type _MainSortMemberType = typeof(TEntity).GetProperty(_MainOrderBy.MemberName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance).PropertyType;
                 SearchyExpressionBuilder.BuildOrderByThenBy(_MainOrderBy, _MainSortMemberType, ref queryable, true);
-                List<OrderByOptions> _EOO = new List<OrderByOptions>();
+                List<SearchyOrder> _EOO = new List<SearchyOrder>();
                 _EOO.Add(_MainOrderBy);
                 foreach (var _OO in Order.Except(_EOO.AsEnumerable()))
                 {

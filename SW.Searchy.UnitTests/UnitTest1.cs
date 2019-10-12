@@ -40,8 +40,8 @@ namespace SW.Searchy.UnitTests
         {
            // var _data = new List<string>() { "Files", "Fil" };
             
-            SearchQuery  _sq= new SearchQuery() ;
-            SearchCondition _sc = new SearchCondition( new FilterByOptions { FilterFor = new List<string>() { "Files", "Fil" }, FilterOperator=FilterByOptions.FilterOperatorOptions.EqualsToList, MemberName= "Name" });
+            SearchyQuery  _sq= new SearchyQuery() ;
+            SearchyConditon _sc = new SearchyConditon( new SearchyFilter { FilterFor = new List<string>() { "Files", "Fil" }, FilterOperator=SearchyFilter.FilterOperatorOptions.EqualsToList, MemberName= "Name" });
             _sq.Conditions.Add(_sc);  
             var _data =_context.UseDms().Repositories.Search(_sq).ToList();
 
@@ -51,10 +51,10 @@ namespace SW.Searchy.UnitTests
         [TestMethod]
         public void SearchyWithOrderBy()
         {
-            SearchQuery _sq = new SearchQuery();
-            SearchCondition _sc = new SearchCondition(new FilterByOptions { FilterFor = "Files", FilterOperator = FilterByOptions.FilterOperatorOptions.Contains, MemberName = "Name" });
+            SearchyQuery _sq = new SearchyQuery();
+            SearchyConditon _sc = new SearchyConditon(new SearchyFilter { FilterFor = "Files", FilterOperator = SearchyFilter.FilterOperatorOptions.Contains, MemberName = "Name" });
             _sq.Conditions.Add(_sc);
-            List<OrderByOptions> _ob = new List<OrderByOptions> { new OrderByOptions("Name", OrderByOptions.Order.ASC) };
+            List<SearchyOrder> _ob = new List<SearchyOrder> { new SearchyOrder("Name", SearchyOrder.Order.ASC) };
 
             var _data = _context.UseDms().Repositories.Search(_sq, _ob, 0, 0).ToList();
             Assert.AreEqual(7, _data.Count);
@@ -66,10 +66,10 @@ namespace SW.Searchy.UnitTests
         [TestMethod]
         public void SearchyWithPaging()
         {
-            SearchQuery _sq = new SearchQuery();
-            SearchCondition _sc = new SearchCondition(new FilterByOptions { FilterFor = "Files", FilterOperator = FilterByOptions.FilterOperatorOptions.Contains, MemberName = "Name" });
+            SearchyQuery _sq = new SearchyQuery();
+            SearchyConditon _sc = new SearchyConditon(new SearchyFilter { FilterFor = "Files", FilterOperator = SearchyFilter.FilterOperatorOptions.Contains, MemberName = "Name" });
             _sq.Conditions.Add(_sc);
-            List<OrderByOptions> _ob = new List<OrderByOptions> { new OrderByOptions("Name", OrderByOptions.Order.ASC) };
+            List<SearchyOrder> _ob = new List<SearchyOrder> { new SearchyOrder("Name", SearchyOrder.Order.ASC) };
 
             var _data0 = _context.UseDms().Repositories.Search(_sq, _ob, 2, 0).ToList();
             Assert.AreEqual(2, _data0.Count);
@@ -84,12 +84,12 @@ namespace SW.Searchy.UnitTests
         [TestMethod]
         public void SearchyWithAndFilter()
         {
-            SearchQuery _sq = new SearchQuery();
-            List<FilterByOptions> _fol = new List<FilterByOptions>();
-            _fol.Add(new FilterByOptions { FilterFor = "Files", FilterOperator = FilterByOptions.FilterOperatorOptions.Contains, MemberName = "Name" });
-            _fol.Add(new FilterByOptions { FilterFor = 2000, FilterOperator = FilterByOptions.FilterOperatorOptions.EqualsTo, MemberName = "MaxDocSize" });
+            SearchyQuery _sq = new SearchyQuery();
+            List<SearchyFilter> _fol = new List<SearchyFilter>();
+            _fol.Add(new SearchyFilter { FilterFor = "Files", FilterOperator = SearchyFilter.FilterOperatorOptions.Contains, MemberName = "Name" });
+            _fol.Add(new SearchyFilter { FilterFor = 2000, FilterOperator = SearchyFilter.FilterOperatorOptions.EqualsTo, MemberName = "MaxDocSize" });
 
-            SearchCondition _sc = new SearchCondition(_fol);
+            SearchyConditon _sc = new SearchyConditon(_fol);
             _sq.Conditions.Add(_sc);
 
             var _data = _context.UseDms().Repositories.Search(_sq).ToList();
@@ -100,10 +100,10 @@ namespace SW.Searchy.UnitTests
         [TestMethod]
         public void SearchyWithOrFilter()
         {
-            SearchQuery _sq = new SearchQuery();
-            SearchCondition _sc = new SearchCondition(new FilterByOptions { FilterFor = "Files", FilterOperator = FilterByOptions.FilterOperatorOptions.Contains, MemberName = "Name" });
+            SearchyQuery _sq = new SearchyQuery();
+            SearchyConditon _sc = new SearchyConditon(new SearchyFilter { FilterFor = "Files", FilterOperator = SearchyFilter.FilterOperatorOptions.Contains, MemberName = "Name" });
             _sq.Conditions.Add(_sc);
-            SearchCondition _sc2 = new SearchCondition(new FilterByOptions { FilterFor = 2000, FilterOperator = FilterByOptions.FilterOperatorOptions.EqualsTo, MemberName = "MaxDocSize" });
+            SearchyConditon _sc2 = new SearchyConditon(new SearchyFilter { FilterFor = 2000, FilterOperator = SearchyFilter.FilterOperatorOptions.EqualsTo, MemberName = "MaxDocSize" });
 
             var _data = _context.UseDms().Repositories.Search(_sq).ToList();
             Assert.AreEqual(7, _data.Count);

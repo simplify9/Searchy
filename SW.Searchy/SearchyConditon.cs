@@ -3,28 +3,28 @@ using System;
 
 namespace SW.Searchy
 {
-    public class SearchCondition
+    public class SearchyConditon
     {
-        public ICollection<FilterByOptions> Criteria { get; set; } = new List<FilterByOptions>();
+        public ICollection<SearchyFilter> Criteria { get; set; } = new List<SearchyFilter>();
 
-        public SearchCondition()
+        public SearchyConditon()
         {
         }
 
-        public SearchCondition(FilterByOptions FilterByOptions)
+        public SearchyConditon(SearchyFilter FilterByOptions)
         {
             this.Criteria.Add(FilterByOptions);
         }
 
-        public SearchCondition(IEnumerable<FilterByOptions> FilterByOptions)
+        public SearchyConditon(IEnumerable<SearchyFilter> FilterByOptions)
         {
             foreach (var _i in FilterByOptions)
                 this.Criteria.Add(_i);
         }
 
-        public SearchCondition Exclude(string[] StartingWith)
+        public SearchyConditon Exclude(string[] StartingWith)
         {
-            var _sc = new SearchCondition();
+            var _sc = new SearchyConditon();
             foreach (var _fo in this.Criteria)
             {
                 foreach (var _s in StartingWith)
@@ -37,16 +37,16 @@ namespace SW.Searchy
             return _sc;
         }
 
-        public SearchCondition Keep(string[] StartingWith, bool RemoveStartingWith = true)
+        public SearchyConditon Keep(string[] StartingWith, bool RemoveStartingWith = true)
         {
-            var _sc = new SearchCondition();
+            var _sc = new SearchyConditon();
             foreach (var _fo in this.Criteria)
             {
                 foreach (var _s in StartingWith)
                 {
                     if (_fo.MemberName.StartsWith(_s, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        var _nfo = new FilterByOptions(_fo.MemberName.Remove(0, _s.Length), _fo.FilterOperator, _fo.FilterFor);
+                        var _nfo = new SearchyFilter(_fo.MemberName.Remove(0, _s.Length), _fo.FilterOperator, _fo.FilterFor);
                         _sc.Criteria.Add(_nfo);
                         break;
                     }
