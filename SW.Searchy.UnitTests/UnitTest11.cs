@@ -15,7 +15,7 @@ namespace SW.Searchy.UnitTests
     [TestClass]
     public class UnitTest11 : IDisposable
     {
-        private DmsContext _context;
+        private DbCtxt _context;
         private SqliteConnection _connection;
 
         private IConfigurationRoot _config;
@@ -23,13 +23,13 @@ namespace SW.Searchy.UnitTests
         {
             _connection = new SqliteConnection("DataSource=:memory:");
             _connection.Open();
-            var options = new DbContextOptionsBuilder<DmsContext>()
+            var options = new DbContextOptionsBuilder<DbCtxt>()
                 .UseSqlite(_connection)
                 .EnableSensitiveDataLogging(true)
                 .Options;
 
             // Create the schema in the database
-            _context = new DmsContext(options);
+            _context = new DbCtxt(options);
             _context.Database.EnsureCreated();
 
 

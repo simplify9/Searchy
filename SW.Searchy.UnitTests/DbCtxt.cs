@@ -11,9 +11,9 @@ using JetBrains.Annotations;
 
 namespace SW.Dms
 {
-    public class DmsContext : DbContext
+    public class DbCtxt : DbContext
     {
-        public DmsContext( DbContextOptions options) : base(options)
+        public DbCtxt( DbContextOptions options) : base(options)
         {
         }
 
