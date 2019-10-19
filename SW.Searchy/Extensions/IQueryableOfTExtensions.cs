@@ -8,22 +8,22 @@ using System.Text;
 
 namespace SW.Searchy
 {
-    public static class IQueryableExtensions
+    public static class IQueryableOfTExtensions
 
     {
-        public static IQueryable<TEntity> Search<TEntity>(this IQueryable<TEntity> Target, 
+        public static IQueryable<TEntity> Search<TEntity>(this IQueryable<TEntity> target,
             string FindMember, 
-            SearchyOperator SearchOperator, 
+            SearchyRule SearchOperator, 
             object WithValue)
         {
-            return Search(Target, new SearchyQuery(new SearchyFilter(FindMember, SearchOperator, WithValue)));
+            return Search(target, new SearchyQuery(new SearchyFilter(FindMember, SearchOperator, WithValue)));
         }
 
-        public static IQueryable<TEntity> Search<TEntity>(this IQueryable<TEntity> Target, 
+        public static IQueryable<TEntity> Search<TEntity>(this IQueryable<TEntity> Target,
             string FindMember,
             object WithValueEquals)
         {
-            return Search(Target, new SearchyQuery(new SearchyFilter(FindMember, SearchyOperator.EqualsTo, WithValueEquals)));
+            return Search(Target, new SearchyQuery(new SearchyFilter(FindMember, SearchyRule.EqualsTo, WithValueEquals)));
         }
 
         public static IQueryable<TEntity> Search<TEntity>(this IQueryable<TEntity> Target, 
@@ -38,6 +38,11 @@ namespace SW.Searchy
             int PageSize = 0, 
             int PageIndex = 0)
         {
+            if (SearchQuery is null)
+            {
+                throw new ArgumentNullException(nameof(SearchQuery));
+            }
+
             var _param = Expression.Parameter(typeof(TEntity), "TEntity");
             Expression finalexp = SearchyExpressionBuilder.BuildSearchExpression<TEntity>(_param, SearchQuery.Conditions);
 
@@ -73,6 +78,11 @@ namespace SW.Searchy
             string NavigationProperty, 
             SearchyQuery SearchQuery)
         {
+            if (SearchQuery is null)
+            {
+                throw new ArgumentNullException(nameof(SearchQuery));
+            }
+
             var _param = Expression.Parameter(typeof(TEntity), "TEntity");
             ParameterExpression _parammany = Expression.Parameter(typeof(TEntityMany), "TEntityMany");
             Expression _finalexp = SearchyExpressionBuilder.BuildSearchExpression<TEntityMany>(_parammany, SearchQuery.Conditions);

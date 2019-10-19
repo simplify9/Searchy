@@ -6,9 +6,11 @@ using System.Reflection;
 
 namespace SW.Searchy
 {
+    [Obsolete]
     internal class SearchQuery<TEntity> : SearchyQuery
     {
 
+        
         public ICollection< SearchyOrder> Order { get; set; } = new List<SearchyOrder>();
 
         public Paging Paging { get; set; }
@@ -52,7 +54,7 @@ namespace SW.Searchy
                 }
             }
 
-            if (Paging == null) return queryable;
+            if (Paging is null) return queryable;
 
             if (Paging.PageSize > 0 & Paging.PageIndex > 0)
                 queryable = queryable.Skip(Paging.PageIndex * Paging.PageSize).Take(Paging.PageSize);

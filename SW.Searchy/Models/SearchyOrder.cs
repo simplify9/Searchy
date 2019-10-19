@@ -15,6 +15,9 @@ namespace SW.Searchy
 
         public Order SortOrder { get; set; }
 
+        public SearchyOrder()
+        {
+        }
 
         public SearchyOrder(string memberName, Order sortOrder)
         {
@@ -22,8 +25,6 @@ namespace SW.Searchy
             SortOrder = sortOrder;
         }
 
-        public SearchyOrder()
-        {
-        }
+
     }
 }

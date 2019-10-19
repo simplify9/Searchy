@@ -1,11 +1,11 @@
 ﻿namespace SW.Searchy
 {
 
-        public enum SearchyOperator
+        public enum SearchyRule
         {
             EqualsTo = 1,
             NotEqualsTo = 2,
-            BeginsWith = 3,
+            StartsWith = 3,
             Contains = 4,
             GreaterThan = 5,
             GreaterThanOrEquals = 6,

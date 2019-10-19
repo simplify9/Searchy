@@ -39,14 +39,14 @@ namespace SW.Searchy
             return _finalexp2;
         }
 
-        public static Expression BuildInnerExpression<TEntity>(Expression Parameter, SearchyFilter FilterByOptions)
+        static Expression BuildInnerExpression<TEntity>(Expression Parameter, SearchyFilter filter)
         {
             Expression _member = null;
             Type _membertype = null;
 
-            if (FilterByOptions.MemberName.StartsWith("."))
+            if (filter.MemberName.StartsWith("."))
             {
-                var _mems = FilterByOptions.MemberName.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+                var _mems = filter.MemberName.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
                 _member = Parameter;
                 _membertype = typeof(TEntity);
                 foreach (var _s in _mems)
@@ -57,76 +57,76 @@ namespace SW.Searchy
             }
             else
             {
-                _member = Expression.Property(Parameter, FilterByOptions.MemberName);
-                _membertype = typeof(TEntity).GetProperty(FilterByOptions.MemberName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance).PropertyType;
+                _member = Expression.Property(Parameter, filter.MemberName);
+                _membertype = typeof(TEntity).GetProperty(filter.MemberName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance).PropertyType;
             }
 
             //Expression _condition = null;
             Expression constant = null;
 
-            var _constcoll = FilterByOptions.FilterFor as ICollection;
-            if (_constcoll == null)
+            var _constcoll = filter.FilterFor as ICollection;
+            if (_constcoll is null)
             {
-                constant = Expression.Constant(ConvertObjectToType(FilterByOptions.FilterFor, _membertype));
+                constant = Expression.Constant(ConvertObjectToType(filter.FilterFor, _membertype));
                 constant = Expression.Convert(constant, _membertype);
             }
 
-            switch (FilterByOptions.FilterOperator)
+            switch (filter.Rule)
             {
-                case SearchyOperator.BeginsWith:
-                case SearchyOperator.Contains:
+                case SearchyRule.StartsWith:
+                case SearchyRule.Contains:
                     {
                         string _method = "";
-                        switch (FilterByOptions.FilterOperator)
+                        switch (filter.Rule)
                         {
-                            case SearchyOperator.BeginsWith:
+                            case SearchyRule.StartsWith:
                                 {
                                     _method = "StartsWith";
                                     break;
                                 }
 
-                            case SearchyOperator.Contains:
+                            case SearchyRule.Contains:
                                 {
                                     _method = "Contains";
                                     break;
                                 }
                         }
                         MethodInfo method = typeof(string).GetMethod(_method, new System.Type[] { typeof(string) });
-                        string str = System.Convert.ToString(FilterByOptions.FilterFor);
-                        return Expression.Call(_member, method, Expression.Constant(FilterByOptions.FilterFor, FilterByOptions.FilterFor.GetType()));
+                        string str = System.Convert.ToString(filter.FilterFor);
+                        return Expression.Call(_member, method, Expression.Constant(filter.FilterFor, filter.FilterFor.GetType()));
                     }
 
-                case SearchyOperator.EqualsTo:
+                case SearchyRule.EqualsTo:
                     {
                         return Expression.Equal(_member, constant);
                     }
 
-                case SearchyOperator.NotEqualsTo:
+                case SearchyRule.NotEqualsTo:
                     {
                         return Expression.NotEqual(_member, constant);
                     }
 
-                case SearchyOperator.LessThan:
+                case SearchyRule.LessThan:
                     {
                         return Expression.LessThan(_member, constant);
                     }
 
-                case SearchyOperator.LessThanOrEquals:
+                case SearchyRule.LessThanOrEquals:
                     {
                         return Expression.LessThanOrEqual(_member, constant);
                     }
 
-                case SearchyOperator.GreaterThan:
+                case SearchyRule.GreaterThan:
                     {
                         return Expression.GreaterThan(_member, constant);
                     }
 
-                case SearchyOperator.GreaterThanOrEquals:
+                case SearchyRule.GreaterThanOrEquals:
                     {
                         return Expression.GreaterThanOrEqual(_member, constant);
                     }
 
-                case SearchyOperator.EqualsToList:
+                case SearchyRule.EqualsToList:
                     {
                         if (_constcoll.Count > 0)
                         {
@@ -137,8 +137,8 @@ namespace SW.Searchy
                             _ienumerable = Activator.CreateInstance(_t1.MakeGenericType(new[] { _membertype }));
                             foreach (var _i in _constcoll)
                                 _ienumerable.Add(ConvertObjectToType(_i, _membertype));
-                            FilterByOptions.FilterFor = _ienumerable;
-                            return Expression.Call(_method, new[] { Expression.Constant(FilterByOptions.FilterFor), _member });
+                            filter.FilterFor = _ienumerable;
+                            return Expression.Call(_method, new[] { Expression.Constant(filter.FilterFor), _member });
                         }
                         else
                             return null;
@@ -151,7 +151,7 @@ namespace SW.Searchy
             }
         }
 
-        public static void BuildOrderBy<U, TEntity>(SearchyOrder OO, ref IQueryable<TEntity> Query)
+        static void BuildOrderBy<U, TEntity>(SearchyOrder OO, ref IQueryable<TEntity> Query)
         {
             ParameterExpression pe = Expression.Parameter(typeof(TEntity), "");
             if (OO.SortOrder == SearchyOrder.Order.ASC)
@@ -160,7 +160,7 @@ namespace SW.Searchy
                 Query = Query.OrderByDescending(Expression.Lambda<Func<TEntity, U>>(Expression.Property(pe, OO.MemberName), new ParameterExpression[] { pe }));
         }
 
-        public static void BuildThenBy<U, TEntity>(SearchyOrder OO, ref IQueryable<TEntity> Query)
+        static void BuildThenBy<U, TEntity>(SearchyOrder OO, ref IQueryable<TEntity> Query)
         {
             ParameterExpression pe = Expression.Parameter(typeof(TEntity), "");
             IOrderedQueryable<TEntity> OrderedQuery = (IOrderedQueryable<TEntity>)Query;
@@ -245,9 +245,9 @@ namespace SW.Searchy
             }
         }
 
-        public static dynamic ConvertObjectToType(object TargetObject, System.Type TargetType)
+        static dynamic ConvertObjectToType(object TargetObject, System.Type TargetType)
         {
-            if (TargetObject == null)
+            if (TargetObject is null)
                 return null;
 
             var _ObjType = TargetObject.GetType();

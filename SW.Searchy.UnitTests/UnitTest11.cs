@@ -13,13 +13,13 @@ using System.Collections.Generic;
 namespace SW.Searchy.UnitTests
 {
     [TestClass]
-    public class UnitTest1 : IDisposable
+    public class UnitTest11 : IDisposable
     {
         private DmsContext _context;
         private SqliteConnection _connection;
 
         private IConfigurationRoot _config;
-        public UnitTest1()
+        public UnitTest11()
         {
             _connection = new SqliteConnection("DataSource=:memory:");
             _connection.Open();
@@ -41,7 +41,7 @@ namespace SW.Searchy.UnitTests
            // var _data = new List<string>() { "Files", "Fil" };
             
             SearchyQuery  _sq= new SearchyQuery() ;
-            SearchyConditon _sc = new SearchyConditon( new SearchyFilter { FilterFor = new List<string>() { "Files", "Fil" }, FilterOperator=SearchyFilter.FilterOperatorOptions.EqualsToList, MemberName= "Name" });
+            SearchyConditon _sc = new SearchyConditon( new SearchyFilter { FilterFor = new List<string>() { "Files", "Fil" }, Rule=SearchyRule.EqualsToList, MemberName= "Name" });
             _sq.Conditions.Add(_sc);  
             var _data =_context.UseDms().Repositories.Search(_sq).ToList();
 
@@ -52,7 +52,7 @@ namespace SW.Searchy.UnitTests
         public void SearchyWithOrderBy()
         {
             SearchyQuery _sq = new SearchyQuery();
-            SearchyConditon _sc = new SearchyConditon(new SearchyFilter { FilterFor = "Files", FilterOperator = SearchyFilter.FilterOperatorOptions.Contains, MemberName = "Name" });
+            SearchyConditon _sc = new SearchyConditon(new SearchyFilter { FilterFor = "Files", Rule = SearchyRule.Contains, MemberName = "Name" });
             _sq.Conditions.Add(_sc);
             List<SearchyOrder> _ob = new List<SearchyOrder> { new SearchyOrder("Name", SearchyOrder.Order.ASC) };
 
@@ -67,7 +67,7 @@ namespace SW.Searchy.UnitTests
         public void SearchyWithPaging()
         {
             SearchyQuery _sq = new SearchyQuery();
-            SearchyConditon _sc = new SearchyConditon(new SearchyFilter { FilterFor = "Files", FilterOperator = SearchyFilter.FilterOperatorOptions.Contains, MemberName = "Name" });
+            SearchyConditon _sc = new SearchyConditon(new SearchyFilter { FilterFor = "Files", Rule = SearchyRule.Contains, MemberName = "Name" });
             _sq.Conditions.Add(_sc);
             List<SearchyOrder> _ob = new List<SearchyOrder> { new SearchyOrder("Name", SearchyOrder.Order.ASC) };
 
@@ -86,8 +86,8 @@ namespace SW.Searchy.UnitTests
         {
             SearchyQuery _sq = new SearchyQuery();
             List<SearchyFilter> _fol = new List<SearchyFilter>();
-            _fol.Add(new SearchyFilter { FilterFor = "Files", FilterOperator = SearchyFilter.FilterOperatorOptions.Contains, MemberName = "Name" });
-            _fol.Add(new SearchyFilter { FilterFor = 2000, FilterOperator = SearchyFilter.FilterOperatorOptions.EqualsTo, MemberName = "MaxDocSize" });
+            _fol.Add(new SearchyFilter { FilterFor = "Files", Rule = SearchyRule.Contains, MemberName = "Name" });
+            _fol.Add(new SearchyFilter { FilterFor = 2000, Rule = SearchyRule.EqualsTo, MemberName = "MaxDocSize" });
 
             SearchyConditon _sc = new SearchyConditon(_fol);
             _sq.Conditions.Add(_sc);
@@ -101,9 +101,9 @@ namespace SW.Searchy.UnitTests
         public void SearchyWithOrFilter()
         {
             SearchyQuery _sq = new SearchyQuery();
-            SearchyConditon _sc = new SearchyConditon(new SearchyFilter { FilterFor = "Files", FilterOperator = SearchyFilter.FilterOperatorOptions.Contains, MemberName = "Name" });
+            SearchyConditon _sc = new SearchyConditon(new SearchyFilter { FilterFor = "Files", Rule = SearchyRule.Contains, MemberName = "Name" });
             _sq.Conditions.Add(_sc);
-            SearchyConditon _sc2 = new SearchyConditon(new SearchyFilter { FilterFor = 2000, FilterOperator = SearchyFilter.FilterOperatorOptions.EqualsTo, MemberName = "MaxDocSize" });
+            SearchyConditon _sc2 = new SearchyConditon(new SearchyFilter { FilterFor = 2000, Rule = SearchyRule.EqualsTo, MemberName = "MaxDocSize" });
 
             var _data = _context.UseDms().Repositories.Search(_sq).ToList();
             Assert.AreEqual(7, _data.Count);
