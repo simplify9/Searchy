@@ -4,9 +4,9 @@ using System.Text;
 
 namespace SW.Searchy
 {
-    public class SearchyResponse
+    public class SearchyResponse<TModel>
     {
-        public object Result { get; set; }
-        public int Count { get; set; }
+        public IEnumerable<TModel> Result { get; set; }
+        public int TotalCount { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using System.Linq;
 
 namespace SW.Searchy
 {
+    
     public class SearchyQuery
     {
         public ICollection<SearchyConditon> Conditions { get; private set; } = new List<SearchyConditon>();

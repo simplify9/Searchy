@@ -25,7 +25,7 @@ namespace SW.Searchy.Mock
         public string Photo { get; set; }
         public ICollection<Leave> Leaves { get; set; }
 
-        public static IList<Employee> Sample = new List<Employee>
+        public static List<Employee> Sample = new List<Employee>
             {
             new Employee()
             {

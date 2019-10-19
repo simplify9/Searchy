@@ -44,7 +44,13 @@ namespace SW.Searchy
         {
             var svc = GetService(serviceName);
             if (svc == null) return NotFound();
-            return new OkObjectResult(await svc.Search(request));
+
+            var result = new SearchyResponse<object>
+            {
+                Result = (await svc.Search(request))
+            };
+
+            return new OkObjectResult(result);
         }
 
         [HttpGet("{serviceName}")]
