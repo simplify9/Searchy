@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Linq;
 using SW.PrimitiveTypes;
 
 namespace SW.Searchy
@@ -32,6 +33,7 @@ namespace SW.Searchy
         public async Task<IActionResult> Search(string serviceName, [FromBody]SearchyRequest request)
         {
             var svc = GetService(serviceName);
+
             if (svc == null) return new NotFoundObjectResult(serviceName);
             return new OkObjectResult(await svc.Search(request));
         }
