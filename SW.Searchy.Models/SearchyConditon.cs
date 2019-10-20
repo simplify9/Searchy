@@ -10,16 +10,27 @@ namespace SW.Searchy
 
         public SearchyConditon() => Filters = new List<SearchyFilter>();
 
+        public SearchyConditon(SearchyFilter filter)
+        {
+            Filters = new List<SearchyFilter> { filter };
+        }
+
         public SearchyConditon(ICollection<SearchyFilter> filters)
+        {
+            Filters = filters;
+        }
+
+        public SearchyConditon(ICollection<ISearchyFilterTyped> filters)
         {
             Filters = filters.Select(f => new SearchyFilter(f)).ToList();
         }
 
-        public SearchyConditon(SearchyFilter filter)
+        public SearchyConditon(ICollection<ISearchyFilter> filters)
         {
-            Filters = new List<SearchyFilter> { filter };
-
+            Filters = filters.Select(f => new SearchyFilter(f)).ToList();
         }
+
+
 
 
 
