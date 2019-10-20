@@ -18,10 +18,9 @@ namespace SW.Searchy.UnitTests.Mock
             }
         }
 
-
         public  Task<SearchyResponse> Search(SearchyRequest request)
         {
-            return Task.FromResult(new SearchyResponse { Result = Employee.Sample.AsEnumerable<object>() });
+            return Task.FromResult(new SearchyResponse { Result = Employee.Sample });
         }
     }
 }

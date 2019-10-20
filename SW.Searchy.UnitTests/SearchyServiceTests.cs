@@ -31,7 +31,7 @@ namespace SW.Searchy.UnitTests
         [TestMethod]
         async public Task TestMethod1()
         {
-
+            //SearchyFilterConfigType.RulesFor(SearchyFilterConfigType.String).(SearchyRule.GreaterThan);
             var sc = new SearchyClient(server.CreateClient());
 
             var v1 = await sc.ListAvailable();

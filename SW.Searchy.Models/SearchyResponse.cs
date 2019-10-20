@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
@@ -10,5 +11,9 @@ namespace SW.Searchy
         public int TotalCount { get; set; }
     }
 
-    public class SearchyResponse : SearchyResponse<object> {}
+    public class SearchyResponse
+    {
+        public IEnumerable Result { get; set; }
+        public int TotalCount { get; set; }
+    }
 }

@@ -19,7 +19,7 @@ namespace SW.Searchy
 
         public async Task<SearchyResponse<TModel>> Search<TModel>(SearchyRequest request)
         {
-            var serviceName = typeof(TModel).FullName.ToLower();
+            var serviceName = typeof(TModel).FullName;
             var response = await Client.PostAsJsonAsync($"/api/searchy/{serviceName}", request);
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadAsAsync<SearchyResponse<TModel>>();
@@ -34,7 +34,7 @@ namespace SW.Searchy
 
         public async Task<IEnumerable<SearchyFilterConfig>> GetFilterConfigs<TModel>()
         {
-            var serviceName = typeof(TModel).FullName.ToLower(); ;
+            var serviceName = typeof(TModel).FullName; ;
             return await GetFilterConfigs(serviceName);
         }
 

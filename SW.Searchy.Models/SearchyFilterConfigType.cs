@@ -1,5 +1,7 @@
 ﻿
 
+using System.Collections.Generic;
+
 namespace SW.Searchy 
 {
     public static class SearchyFilterConfigType
@@ -9,7 +11,7 @@ namespace SW.Searchy
         public const string Int = "int";
         public const string Decimal = "decimal";
 
-        public static SearchyRule[] RulesFor(string dataType)
+        public static ICollection<SearchyRule> RulesFor(string dataType)
         {
             switch (dataType)
             {
@@ -56,55 +58,6 @@ namespace SW.Searchy
             return null;
 
         }
-
-        //        static readonly List<SimplyFilterOperator> operators = new List<SimplyFilterOperator>
-        //{
-        //        new SimplyFilterOperator()
-        //        {
-        //        Operator=SearchyRule.EqualsTo,
-        //        Applicability=new[] {"decimal", "int", "string" }
-        //        },
-        //        new SimplyFilterOperator()
-        //        {
-        //        Operator=SearchyRule.NotEqualsTo,
-        //        Applicability=new[] {"decimal", "int", "string" }
-        //        },
-        //        new SimplyFilterOperator()
-        //        {
-        //        Operator=SearchyRule.GreaterThan,
-        //        Applicability=new[] {"date", "decimal", "int" }
-        //        },
-        //        new SimplyFilterOperator()
-        //        {
-        //        Operator=SearchyRule.GreaterThanOrEquals,
-        //        Applicability=new[] {"date", "decimal", "int" }
-        //        },
-        //        new SimplyFilterOperator()
-        //        {
-        //        Operator=SearchyRule.LessThan,
-        //        Applicability=new[] {"date", "decimal", "int" }
-        //        },
-        //        new SimplyFilterOperator()
-        //        {
-        //        Operator=SearchyRule.LessThanOrEquals,
-        //        Applicability=new[] {"date", "decimal", "int" }
-        //        },
-        //        new SimplyFilterOperator()
-        //        {
-        //        Operator=SearchyRule.BeginsWith,
-        //        Applicability=new[] {"string" }
-        //        },
-        //        new SimplyFilterOperator()
-        //        {
-        //        Operator=SearchyRule.Contains,
-        //        Applicability=new[] {"string" }
-        //        },
-        //new SimplyFilterOperator()
-        //{
-        //Operator=SearchyRule.EqualsToList,
-        //Applicability=new[] {SimplyFilterDefinitionType.Text }
-        //},
-
     };
 
 
