@@ -2,6 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>SimplyWorks.Searchy.Models</PackageId>
+    <Product>SimplyWorks.Searchy.Models</Product>
+    <Company>SimplyWorks</Company>
+    <Authors>SimplyWorks</Authors>
   </PropertyGroup>
 
 </Project>

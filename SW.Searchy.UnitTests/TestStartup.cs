@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SW.PrimitiveTypes;
-using SW.Searchy.Mock;
+using SW.Searchy.UnitTests.Mock;
 
 namespace SW.Searchy.UnitTests 
 {

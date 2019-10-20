@@ -39,7 +39,7 @@ namespace SW.Searchy
             return _finalexp2;
         }
 
-        static Expression BuildInnerExpression<TEntity>(Expression Parameter, SearchyFilter filter)
+        static Expression BuildInnerExpression<TEntity>(Expression Parameter, ISearchyFilter filter)
         {
             Expression _member = null;
             Type _membertype = null;

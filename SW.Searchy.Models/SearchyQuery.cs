@@ -11,6 +11,6 @@ namespace SW.Searchy
         public SearchyQuery() {}
         public SearchyQuery(SearchyConditon condition) => Conditions.Add(condition);
         public SearchyQuery(IEnumerable<SearchyConditon> conditions) => Conditions = conditions.ToList();
-        public SearchyQuery(SearchyFilter filter) => Conditions.Add(new SearchyConditon(filter));
+        public SearchyQuery(ISearchyFilter filter) => Conditions.Add(new SearchyConditon(filter));
     }
 }

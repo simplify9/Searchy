@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 
-namespace SW.Searchy.Mock
+namespace SW.Searchy.UnitTests.Mock 
 {
     public class Employee
     {

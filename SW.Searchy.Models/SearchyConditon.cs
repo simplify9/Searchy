@@ -6,14 +6,14 @@ namespace SW.Searchy
 {
     public class SearchyConditon
     {
-        public ICollection<SearchyFilter> Criteria { get; } = new List<SearchyFilter>();
+        public ICollection<ISearchyFilter> Criteria { get; } = new List<ISearchyFilter>();
 
         public SearchyConditon() {}
 
-        public SearchyConditon(IEnumerable<SearchyFilter> filters) : this(filters.ToArray()) {}
+        public SearchyConditon(IEnumerable<ISearchyFilter> filters) : this(filters.ToArray()) {}
 
 
-        public SearchyConditon(params SearchyFilter[] filters)
+        public SearchyConditon(params ISearchyFilter[] filters)
         {
             
             if (filters is null) throw new ArgumentNullException(nameof(filters));

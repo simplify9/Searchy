@@ -2,6 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>SimplyWorks.Searchy.Client</PackageId>
+    <Product>SimplyWorks.Searchy.Client</Product>
+    <Authors>SimplyWorks</Authors>
   </PropertyGroup>
 
   <ItemGroup>
