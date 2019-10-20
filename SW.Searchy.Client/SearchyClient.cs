@@ -17,10 +17,12 @@ namespace SW.Searchy
             return await response.Content.ReadAsAsync<IEnumerable<string>>();
         }
 
-        public async Task<SearchyResponse> Search<TModel>(SearchyRequest request)
+        public async Task<SearchyResponse<TModel>> Search<TModel>(SearchyRequest request)
         {
-            var serviceName = typeof(TModel).FullName.ToLower(); ;
-            return (await Search(serviceName, request));
+            var serviceName = typeof(TModel).FullName.ToLower();
+            var response = await Client.PostAsJsonAsync($"/api/searchy/{serviceName}", request);
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadAsAsync<SearchyResponse<TModel>>();
         }
 
         public async Task<SearchyResponse> Search(string serviceName, SearchyRequest request)

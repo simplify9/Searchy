@@ -10,9 +10,5 @@ namespace SW.Searchy
         public int TotalCount { get; set; }
     }
 
-    public class SearchyResponse : SearchyResponse<object>
-    {
-        //public IEnumerable<object> Result { get; set; }
-        //public int TotalCount { get; set; }
-    }
+    public class SearchyResponse : SearchyResponse<object> {}
 }
