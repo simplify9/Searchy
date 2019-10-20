@@ -7,7 +7,6 @@ namespace SW.Searchy
     public class SearchyConditon
     {
         public ICollection<ISearchyFilter> Filters { get; } = new List<ISearchyFilter>();
-
         public SearchyConditon() {}
 
         public SearchyConditon(IEnumerable<ISearchyFilter> filters) : this(filters.ToArray()) {}
