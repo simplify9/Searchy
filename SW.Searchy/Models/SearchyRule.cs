@@ -1,6 +1,5 @@
 ﻿namespace SW.Searchy
 {
-
         public enum SearchyRule
         {
             EqualsTo = 1,
@@ -13,5 +12,4 @@
             LessThanOrEquals = 8,
             EqualsToList = 9
         }
-
 }

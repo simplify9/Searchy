@@ -14,4 +14,8 @@
     <PackageReference Include="SimplyWorks.PrimitiveTypes" Version="2019.10.17.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SW.Searchy.Models\SW.Searchy.Models.csproj" />
+  </ItemGroup>
+
 </Project>

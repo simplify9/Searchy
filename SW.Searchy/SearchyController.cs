@@ -65,5 +65,15 @@ namespace SW.Searchy
 
             return new OkObjectResult(await svc.Search(request));
         }
+
+        [HttpGet("{serviceName}/filter")]
+        public IActionResult GetFilterConfigs(string serviceName)
+        {
+            string queryString = Request.QueryString.ToString().ToLower();
+
+            var svc = GetService(serviceName);
+            if (svc == null) return NotFound();
+            return new OkObjectResult(svc.FilterConfigs);
+        }
     }
 }

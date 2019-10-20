@@ -44,9 +44,9 @@ namespace SW.Searchy
             Expression _member = null;
             Type _membertype = null;
 
-            if (filter.MemberName.StartsWith("."))
+            if (filter.Field.StartsWith("."))
             {
-                var _mems = filter.MemberName.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+                var _mems = filter.Field.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
                 _member = Parameter;
                 _membertype = typeof(TEntity);
                 foreach (var _s in _mems)
@@ -57,17 +57,17 @@ namespace SW.Searchy
             }
             else
             {
-                _member = Expression.Property(Parameter, filter.MemberName);
-                _membertype = typeof(TEntity).GetProperty(filter.MemberName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance).PropertyType;
+                _member = Expression.Property(Parameter, filter.Field);
+                _membertype = typeof(TEntity).GetProperty(filter.Field, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance).PropertyType;
             }
 
             //Expression _condition = null;
             Expression constant = null;
 
-            var _constcoll = filter.FilterFor as ICollection;
+            var _constcoll = filter.Value as ICollection;
             if (_constcoll is null)
             {
-                constant = Expression.Constant(ConvertObjectToType(filter.FilterFor, _membertype));
+                constant = Expression.Constant(ConvertObjectToType(filter.Value, _membertype));
                 constant = Expression.Convert(constant, _membertype);
             }
 
@@ -92,8 +92,8 @@ namespace SW.Searchy
                                 }
                         }
                         MethodInfo method = typeof(string).GetMethod(_method, new System.Type[] { typeof(string) });
-                        string str = System.Convert.ToString(filter.FilterFor);
-                        return Expression.Call(_member, method, Expression.Constant(filter.FilterFor, filter.FilterFor.GetType()));
+                        string str = System.Convert.ToString(filter.Value);
+                        return Expression.Call(_member, method, Expression.Constant(filter.Value, filter.Value.GetType()));
                     }
 
                 case SearchyRule.EqualsTo:
@@ -137,8 +137,8 @@ namespace SW.Searchy
                             _ienumerable = Activator.CreateInstance(_t1.MakeGenericType(new[] { _membertype }));
                             foreach (var _i in _constcoll)
                                 _ienumerable.Add(ConvertObjectToType(_i, _membertype));
-                            filter.FilterFor = _ienumerable;
-                            return Expression.Call(_method, new[] { Expression.Constant(filter.FilterFor), _member });
+                            filter.Value = _ienumerable;
+                            return Expression.Call(_method, new[] { Expression.Constant(filter.Value), _member });
                         }
                         else
                             return null;

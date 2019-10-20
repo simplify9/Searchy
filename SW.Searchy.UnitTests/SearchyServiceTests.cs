@@ -35,6 +35,7 @@ namespace SW.Searchy.UnitTests
             var sc = new SearchyClient(server.CreateClient());
 
             var v1 = await sc.ListAvailable();
+            var v3 = await sc.GetFilterConfigs<Mock.Employee>(); 
             var v2 = await sc.Search<Mock.Employee>(new SearchyRequest());
             //var v3 = await sc.Search("mock");
             //var v4 = await sc.Get("mock", "key1");

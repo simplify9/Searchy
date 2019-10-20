@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SW.Searchy\SW.Searchy.csproj" />
+    <ProjectReference Include="..\SW.Searchy.Models\SW.Searchy.Models.csproj" />
   </ItemGroup>
 
 </Project>

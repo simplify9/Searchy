@@ -1,28 +1,21 @@
-﻿using System.Collections.Generic;
-using System;
-using System.Xml.Serialization;
+﻿
 
 namespace SW.Searchy
 {
-    public partial class SearchyFilter
+    public class SearchyFilter : ISearchyFilter
     {
-        public string MemberName { get; set; }
+        public string Field { get; set; }
 
-        public object FilterFor { get; set; }
+        public object Value { get; set; }
         public SearchyRule Rule { get; set; }
-        //public Type MemberType { get; set; }
 
-        public SearchyFilter()
+        public SearchyFilter() {}
+
+        public SearchyFilter(string field, SearchyRule rule, object value)
         {
+            Field = field;
+            Value = value;
+            Rule = rule;
         }
-
-        public SearchyFilter(string MemberName, SearchyRule rule, object FilterFor)
-        {
-            this.MemberName = MemberName;
-            this.FilterFor = FilterFor;
-            this.Rule = rule;
-        }
-
-
     }
 }

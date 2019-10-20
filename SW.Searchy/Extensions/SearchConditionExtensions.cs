@@ -18,7 +18,7 @@ namespace SW.Searchy
             {
                 foreach (var _s in BeginsWith)
                 {
-                    if (_fo.MemberName.StartsWith(_s, StringComparison.InvariantCultureIgnoreCase))
+                    if (_fo.Field.StartsWith(_s, StringComparison.InvariantCultureIgnoreCase))
                         break;
                     _sc.Criteria.Add(_fo);
                 }
@@ -33,9 +33,9 @@ namespace SW.Searchy
             {
                 foreach (var _s in BeginsWith)
                 {
-                    if (_fo.MemberName.StartsWith(_s, StringComparison.InvariantCultureIgnoreCase))
+                    if (_fo.Field.StartsWith(_s, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        var _nfo = new SearchyFilter(_fo.MemberName.Remove(0, _s.Length), _fo.Rule, _fo.FilterFor);
+                        var _nfo = new SearchyFilter(_fo.Field.Remove(0, _s.Length), _fo.Rule, _fo.Value);
                         _sc.Criteria.Add(_nfo);
                         break;
                     }

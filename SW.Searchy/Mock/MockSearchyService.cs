@@ -9,6 +9,16 @@ namespace SW.Searchy.Mock
     {
         public string Serves => typeof(Employee).FullName.ToLower();
 
+        public IEnumerable<ISearchyFilterConfig> FilterConfigs
+        {
+            get
+            {
+                return new List<ISearchyFilterConfig> 
+                { new SearchyFilterConfig {Type="int", Field="Id", Text="The Id" } };  
+            }
+        }
+
+
         public  Task<IEnumerable<object>> Search(SearchyRequest request)
         {
             return Task.FromResult(Employee.Sample.AsEnumerable<object>());

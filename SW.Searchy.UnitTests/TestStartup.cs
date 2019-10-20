@@ -25,6 +25,7 @@ namespace SW.Searchy.UnitTests
         {
             services.AddControllers().AddApplicationPart(typeof(SearchyController).Assembly);
             services.AddSingleton<ISearchyService, MockSearchyService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

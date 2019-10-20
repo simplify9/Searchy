@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SW.Searchy.UnitTests", "SW.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SW.Searchy.Client", "SW.Searchy.Client\SW.Searchy.Client.csproj", "{16370463-9AE7-4D93-9A27-C104BDF7AD36}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SW.Searchy.Models", "SW.Searchy.Models\SW.Searchy.Models.csproj", "{4D0B5189-B3BE-4B6A-AADF-5406C86C8140}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{16370463-9AE7-4D93-9A27-C104BDF7AD36}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{16370463-9AE7-4D93-9A27-C104BDF7AD36}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{16370463-9AE7-4D93-9A27-C104BDF7AD36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D0B5189-B3BE-4B6A-AADF-5406C86C8140}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D0B5189-B3BE-4B6A-AADF-5406C86C8140}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D0B5189-B3BE-4B6A-AADF-5406C86C8140}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D0B5189-B3BE-4B6A-AADF-5406C86C8140}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

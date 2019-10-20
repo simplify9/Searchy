@@ -8,7 +8,7 @@ namespace SW.Searchy
     public interface ISearchyService
     {
         string Serves { get; }
-
+        IEnumerable<ISearchyFilterConfig> FilterConfigs { get; }
         Task<IEnumerable<object>> Search(SearchyRequest request);
     }
 }

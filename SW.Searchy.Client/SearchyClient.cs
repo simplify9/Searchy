@@ -26,6 +26,15 @@ namespace SW.Searchy
             return  await response.Content.ReadAsAsync<SearchyResponse<TModel>>();
         }
 
+        public async Task<IEnumerable<SearchyFilterConfig>> GetFilterConfigs<TModel>()
+        {
+            var serviceName = typeof(TModel).FullName.ToLower(); ;
+            var response = await Client.GetAsync($"/api/searchy/{serviceName}/filter");
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsAsync<IEnumerable<SearchyFilterConfig>>();
+        }
+
         //public async Task<string> Get(string lookupServiceName, object key)
         //{
         //    var response = await Client.GetAsync($"/api/lookup/{lookupServiceName}/{key}");
