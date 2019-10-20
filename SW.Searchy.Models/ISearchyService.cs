@@ -9,6 +9,6 @@ namespace SW.Searchy
     {
         string Serves { get; }
         IEnumerable<ISearchyFilterConfig> FilterConfigs { get; }
-        Task<IEnumerable<object>> Search(SearchyRequest request);
+        Task<SearchyResponse> Search(SearchyRequest request);
     }
 }

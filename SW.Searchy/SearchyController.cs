@@ -13,29 +13,18 @@ namespace SW.Searchy
     public class SearchyController : ControllerBase
     {
         readonly IServiceProvider serviceProvider;
-        public SearchyController(IServiceProvider serviceProvider)
-        {
-            this.serviceProvider = serviceProvider;
-        }
+        public SearchyController(IServiceProvider serviceProvider) => this.serviceProvider = serviceProvider;
 
         [HttpGet]
         public IActionResult List()
         {
-            var svcNames = serviceProvider.GetServices<ISearchyService>().Select(e => e.Serves);
-
-            HashSet<string> result = new HashSet<string>(); ;
-
-            foreach (var name in svcNames)
-            {
-                result.Add(name.ToLower());
-            }
-
-            return new OkObjectResult(result);
+            var svcs = serviceProvider.GetServices<ISearchyService>().Select(e => e.Serves).ToList() ;
+            return new OkObjectResult(svcs);
         }
 
         ISearchyService GetService(string serviceName)
         {
-            var svcs = serviceProvider.GetServices<ISearchyService>().Where(e => e.Serves== serviceName);
+            var svcs = serviceProvider.GetServices<ISearchyService>().Where(e => e.Serves.ToLower().EndsWith(serviceName.ToLower()));
             return svcs.SingleOrDefault();
         }
 
@@ -43,36 +32,15 @@ namespace SW.Searchy
         public async Task<IActionResult> Search(string serviceName, [FromBody]SearchyRequest request)
         {
             var svc = GetService(serviceName);
-            if (svc == null) return NotFound();
-
-            var result = new SearchyResponse<object>
-            {
-                Result = (await svc.Search(request))
-            };
-
-            return new OkObjectResult(result);
-        }
-
-        [HttpGet("{serviceName}")]
-        public async Task<IActionResult> Get(string serviceName)
-        {
-            string queryString = Request.QueryString.ToString().ToLower();
-
-            var svc = GetService(serviceName);
-            if (svc == null) return NotFound();
-
-            var request = new SearchyRequest();
-
+            if (svc == null) return new NotFoundObjectResult(serviceName);
             return new OkObjectResult(await svc.Search(request));
         }
 
         [HttpGet("{serviceName}/filter")]
         public IActionResult GetFilterConfigs(string serviceName)
         {
-            string queryString = Request.QueryString.ToString().ToLower();
-
             var svc = GetService(serviceName);
-            if (svc == null) return NotFound();
+            if (svc == null) return new NotFoundObjectResult(serviceName);
             return new OkObjectResult(svc.FilterConfigs);
         }
     }
