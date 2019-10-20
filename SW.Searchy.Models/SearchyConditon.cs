@@ -6,7 +6,7 @@ namespace SW.Searchy
 {
     public class SearchyConditon
     {
-        public ICollection<ISearchyFilter> Criteria { get; } = new List<ISearchyFilter>();
+        public ICollection<ISearchyFilter> Filters { get; } = new List<ISearchyFilter>();
 
         public SearchyConditon() {}
 
@@ -18,7 +18,7 @@ namespace SW.Searchy
             
             if (filters is null) throw new ArgumentNullException(nameof(filters));
 
-            foreach (var _i in filters) Criteria.Add(_i);
+            foreach (var _i in filters) Filters.Add(_i);
         }
 
 

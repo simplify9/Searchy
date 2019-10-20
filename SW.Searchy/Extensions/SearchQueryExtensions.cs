@@ -34,14 +34,14 @@ namespace SW.Searchy
                 {
                     foreach (var _cs in SourceSearchQuery.Conditions)
                     {
-                        var _newcd = new SearchyConditon(_cd.Criteria.ToArray());
+                        var _newcd = new SearchyConditon(_cd.Filters.ToArray());
                         _result.Conditions.Add(_newcd);
-                        foreach (var _fo in _cs.Criteria) _newcd.Criteria.Add(_fo);
+                        foreach (var _fo in _cs.Filters) _newcd.Filters.Add(_fo);
                     }
                 }
                 else
                 {
-                    var _newcd = new SearchyConditon(_cd.Criteria.ToArray());
+                    var _newcd = new SearchyConditon(_cd.Filters.ToArray());
                     _result.Conditions.Add(_newcd);
                 }
             }

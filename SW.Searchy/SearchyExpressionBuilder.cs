@@ -19,7 +19,7 @@ namespace SW.Searchy
             {
                 Expression _finalexp = null;
                 int _counter = 0;
-                foreach (var _fo in _sc.Criteria)
+                foreach (var _fo in _sc.Filters)
                 {
                     var _inner = BuildInnerExpression<TEntity>(Parameter, _fo);
                     if (_counter == 0)

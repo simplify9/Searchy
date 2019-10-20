@@ -14,13 +14,13 @@ namespace SW.Searchy
             }
 
             var _sc = new SearchyConditon();
-            foreach (var _fo in sc.Criteria)
+            foreach (var _fo in sc.Filters)
             {
                 foreach (var _s in BeginsWith)
                 {
                     if (_fo.Field.StartsWith(_s, StringComparison.InvariantCultureIgnoreCase))
                         break;
-                    _sc.Criteria.Add(_fo);
+                    _sc.Filters.Add(_fo);
                 }
             }
             return _sc;
@@ -29,14 +29,14 @@ namespace SW.Searchy
         public static SearchyConditon Keep(this SearchyConditon sc, string[] BeginsWith, bool RemoveStartingWith = true)
         {
             var _sc = new SearchyConditon();
-            foreach (var _fo in sc.Criteria)
+            foreach (var _fo in sc.Filters)
             {
                 foreach (var _s in BeginsWith)
                 {
                     if (_fo.Field.StartsWith(_s, StringComparison.InvariantCultureIgnoreCase))
                     {
                         var _nfo = new SearchyFilter(_fo.Field.Remove(0, _s.Length), _fo.Rule, _fo.Value);
-                        _sc.Criteria.Add(_nfo);
+                        _sc.Filters.Add(_nfo);
                         break;
                     }
                 }
