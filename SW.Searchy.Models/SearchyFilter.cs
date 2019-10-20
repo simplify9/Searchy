@@ -17,5 +17,14 @@ namespace SW.Searchy
             Value = value;
             Rule = rule;
         }
+
+        public SearchyFilter(ISearchyFilter filter)
+        {
+            Field = filter.Field;
+            Rule = filter.Rule;
+            Value = filter.Value;
+
+
+        }
     }
 }

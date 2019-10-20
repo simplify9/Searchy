@@ -7,11 +7,13 @@ namespace SW.Searchy
     public class SearchyConditon
     {
         public ICollection<SearchyFilter> Filters { get; set; }
+
+
         public SearchyConditon() => Filters = new List<SearchyFilter>();
 
-        public SearchyConditon(IEnumerable<SearchyFilter> filters)
+        public SearchyConditon(IEnumerable<ISearchyFilter> filters)
         {
-            Filters = new List<SearchyFilter>(filters);
+            Filters = filters.Select(f => new SearchyFilter(f)).ToList();
         }
         
         public SearchyConditon(SearchyFilter filter)
@@ -21,6 +23,8 @@ namespace SW.Searchy
                 filter
             };
         }
+
+
 
 
 
