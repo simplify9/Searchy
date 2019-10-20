@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SW.Searchy.UnitTests
@@ -36,7 +37,7 @@ namespace SW.Searchy.UnitTests
 
             var v1 = await sc.ListAvailable();
             var v3 = await sc.GetFilterConfigs<Mock.Employee>(); 
-            var v2 = await sc.Search<Mock.Employee>(new SearchyRequest());
+            var v2 = await sc.Search<Mock.Employee>(new SearchyRequest { Conditions = new List<SearchyConditon> { new SearchyConditon(new SearchyFilter("FirstName", SearchyRule.StartsWith, "s"))  } } );
             //var v3 = await sc.Search("mock");
             //var v4 = await sc.Get("mock", "key1");
         }

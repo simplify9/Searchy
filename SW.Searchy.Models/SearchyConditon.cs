@@ -6,19 +6,22 @@ namespace SW.Searchy
 {
     public class SearchyConditon
     {
-        public ICollection<ISearchyFilter> Filters { get; } = new List<ISearchyFilter>();
-        public SearchyConditon() {}
+        public ICollection<SearchyFilter> Filters { get; set; }
+        public SearchyConditon() => Filters = new List<SearchyFilter>();
 
-        public SearchyConditon(IEnumerable<ISearchyFilter> filters) : this(filters.ToArray()) {}
-
-
-        public SearchyConditon(params ISearchyFilter[] filters)
+        public SearchyConditon(IEnumerable<SearchyFilter> filters)
         {
-            
-            if (filters is null) throw new ArgumentNullException(nameof(filters));
-
-            foreach (var _i in filters) Filters.Add(_i);
+            Filters = new List<SearchyFilter>(filters);
         }
+        
+        public SearchyConditon(SearchyFilter filter)
+        {
+            Filters = new List<SearchyFilter>
+            {
+                filter
+            };
+        }
+
 
 
     }
