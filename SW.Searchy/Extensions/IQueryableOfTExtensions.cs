@@ -27,13 +27,13 @@ namespace SW.Searchy
         }
 
         public static IQueryable<TEntity> Search<TEntity>(this IQueryable<TEntity> Target, 
-            SearchyConditon SearchCondition)
+            SearchyCondition SearchCondition)
         {
             return Search(Target, new SearchyQuery(SearchCondition));
         }
 
         public static IQueryable<TEntity> Search<TEntity>(this IQueryable<TEntity> Target,
-            IEnumerable<SearchyConditon> conditions,
+            IEnumerable<SearchyCondition> conditions,
             IEnumerable<SearchyOrder> orders = null,
             int pageSize = 0,
             int PageIndex = 0)

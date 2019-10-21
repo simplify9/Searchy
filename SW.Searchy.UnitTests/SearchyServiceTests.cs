@@ -39,7 +39,7 @@ namespace SW.Searchy.UnitTests
             var v1 = await sc.ListAvailable();
             var v3 = await sc.GetFilterConfigs<Mock.Employee>();
             var filterTyped = new SearchyFilterTyped { Field = "FirstName", Rule = SearchyRule.EqualsTo, ValueDate = DateTime.UtcNow };
-            var v2 = await sc.Search<Mock.Employee>(new SearchyRequest { Conditions = new List<SearchyConditon> { new SearchyConditon(new SearchyFilter(filterTyped))  } } );
+            var v2 = await sc.Search<Mock.Employee>(new SearchyRequest { Conditions = new List<SearchyCondition> { new SearchyCondition(new SearchyFilter(filterTyped))  } } );
             //var v3 = await sc.Search("mock");
             //var v4 = await sc.Get("mock", "key1");
         }

@@ -6,11 +6,11 @@ namespace SW.Searchy
     
     public class SearchyQuery
     {
-        public ICollection<SearchyConditon> Conditions { get; private set; } = new List<SearchyConditon>();
+        public ICollection<SearchyCondition> Conditions { get; private set; } = new List<SearchyCondition>();
 
         public SearchyQuery() {}
-        public SearchyQuery(SearchyConditon condition) => Conditions.Add(condition);
-        public SearchyQuery(IEnumerable<SearchyConditon> conditions) => Conditions = conditions.ToList();
-        public SearchyQuery(SearchyFilter filter) => Conditions.Add(new SearchyConditon(filter));
+        public SearchyQuery(SearchyCondition condition) => Conditions.Add(condition);
+        public SearchyQuery(IEnumerable<SearchyCondition> conditions) => Conditions = conditions.ToList();
+        public SearchyQuery(SearchyFilter filter) => Conditions.Add(new SearchyCondition(filter));
     }
 }

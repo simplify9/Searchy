@@ -10,7 +10,7 @@ namespace SW.Searchy
 {
     internal static class SearchyExpressionBuilder
     {
-        public static Expression BuildSearchExpression<TEntity>(Expression Parameter, IEnumerable<SearchyConditon> SearchConditions)
+        public static Expression BuildSearchExpression<TEntity>(Expression Parameter, IEnumerable<SearchyCondition> SearchConditions)
         {
             Expression _finalexp2 = null;
             int _counter2 = 0;

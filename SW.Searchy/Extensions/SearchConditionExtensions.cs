@@ -6,14 +6,14 @@ namespace SW.Searchy
 {
     public static class SearchConditionExtensions
     {
-        public static  SearchyConditon Exclude(this SearchyConditon sc, string[] BeginsWith)
+        public static  SearchyCondition Exclude(this SearchyCondition sc, string[] BeginsWith)
         {
             if (BeginsWith is null)
             {
                 throw new ArgumentNullException(nameof(BeginsWith));
             }
 
-            var _sc = new SearchyConditon();
+            var _sc = new SearchyCondition();
             foreach (var _fo in sc.Filters)
             {
                 foreach (var _s in BeginsWith)
@@ -26,9 +26,9 @@ namespace SW.Searchy
             return _sc;
         }
 
-        public static SearchyConditon Keep(this SearchyConditon sc, string[] BeginsWith, bool RemoveStartingWith = true)
+        public static SearchyCondition Keep(this SearchyCondition sc, string[] BeginsWith, bool RemoveStartingWith = true)
         {
-            var _sc = new SearchyConditon();
+            var _sc = new SearchyCondition();
             foreach (var _fo in sc.Filters)
             {
                 foreach (var _s in BeginsWith)

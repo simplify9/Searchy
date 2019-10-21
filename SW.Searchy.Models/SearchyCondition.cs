@@ -4,28 +4,28 @@ using System.Linq;
 
 namespace SW.Searchy
 {
-    public class SearchyConditon
+    public class SearchyCondition
     {
         public ICollection<SearchyFilter> Filters { get; set; }
 
-        public SearchyConditon() => Filters = new List<SearchyFilter>();
+        public SearchyCondition() => Filters = new List<SearchyFilter>();
 
-        public SearchyConditon(SearchyFilter filter)
+        public SearchyCondition(SearchyFilter filter)
         {
             Filters = new List<SearchyFilter> { filter };
         }
 
-        public SearchyConditon(ICollection<SearchyFilter> filters)
+        public SearchyCondition(ICollection<SearchyFilter> filters)
         {
             Filters = filters;
         }
 
-        public SearchyConditon(ICollection<ISearchyFilterTyped> filters)
+        public SearchyCondition(ICollection<ISearchyFilterTyped> filters)
         {
             Filters = filters.Select(f => new SearchyFilter(f)).ToList();
         }
 
-        public SearchyConditon(ICollection<ISearchyFilter> filters)
+        public SearchyCondition(ICollection<ISearchyFilter> filters)
         {
             Filters = filters.Select(f => new SearchyFilter(f)).ToList();
         }

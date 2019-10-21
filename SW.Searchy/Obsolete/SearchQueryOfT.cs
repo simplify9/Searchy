@@ -19,14 +19,14 @@ namespace SW.Searchy
         {
         }
 
-        public SearchQuery(SearchyConditon SearchCondition)
+        public SearchQuery(SearchyCondition SearchCondition)
         {
             Conditions.Add(SearchCondition);
         }
 
         public SearchQuery(SearchyFilter FilterByOptions)
         {
-            Conditions.Add(new SearchyConditon(FilterByOptions));
+            Conditions.Add(new SearchyCondition(FilterByOptions));
         }
 
         public IQueryable<TEntity> Apply(IQueryable<TEntity> queryable)

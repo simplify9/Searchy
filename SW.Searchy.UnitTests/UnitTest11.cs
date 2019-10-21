@@ -41,7 +41,7 @@ namespace SW.Searchy.UnitTests
            // var _data = new List<string>() { "Files", "Fil" };
             
             SearchyQuery  _sq= new SearchyQuery() ;
-            SearchyConditon _sc = new SearchyConditon( new SearchyFilter { Value = new List<string>() { "Files", "Fil" }, Rule=SearchyRule.EqualsToList, Field= "Name" });
+            SearchyCondition _sc = new SearchyCondition( new SearchyFilter { Value = new List<string>() { "Files", "Fil" }, Rule=SearchyRule.EqualsToList, Field= "Name" });
             _sq.Conditions.Add(_sc);  
             var _data =_context.UseDms().Repositories.Search(_sq).ToList();
 
@@ -52,7 +52,7 @@ namespace SW.Searchy.UnitTests
         public void SearchyWithOrderBy()
         {
             SearchyQuery _sq = new SearchyQuery();
-            SearchyConditon _sc = new SearchyConditon(new SearchyFilter { Value = "Files", Rule = SearchyRule.Contains, Field = "Name" });
+            SearchyCondition _sc = new SearchyCondition(new SearchyFilter { Value = "Files", Rule = SearchyRule.Contains, Field = "Name" });
             _sq.Conditions.Add(_sc);
             List<SearchyOrder> _ob = new List<SearchyOrder> { new SearchyOrder("Name", SearchyOrder.Order.ASC) };
 
@@ -67,7 +67,7 @@ namespace SW.Searchy.UnitTests
         public void SearchyWithPaging()
         {
             SearchyQuery _sq = new SearchyQuery();
-            SearchyConditon _sc = new SearchyConditon(new SearchyFilter { Value = "Files", Rule = SearchyRule.Contains, Field = "Name" });
+            SearchyCondition _sc = new SearchyCondition(new SearchyFilter { Value = "Files", Rule = SearchyRule.Contains, Field = "Name" });
             _sq.Conditions.Add(_sc);
             List<SearchyOrder> _ob = new List<SearchyOrder> { new SearchyOrder("Name", SearchyOrder.Order.ASC) };
 
@@ -89,7 +89,7 @@ namespace SW.Searchy.UnitTests
             _fol.Add(new SearchyFilter { Value = "Files", Rule = SearchyRule.Contains, Field = "Name" });
             _fol.Add(new SearchyFilter { Value = 2000, Rule = SearchyRule.EqualsTo, Field = "MaxDocSize" });
 
-            SearchyConditon _sc = new SearchyConditon(_fol);
+            SearchyCondition _sc = new SearchyCondition(_fol);
             _sq.Conditions.Add(_sc);
 
             var _data = _context.UseDms().Repositories.Search(_sq).ToList();
@@ -101,9 +101,9 @@ namespace SW.Searchy.UnitTests
         public void SearchyWithOrFilter()
         {
             SearchyQuery _sq = new SearchyQuery();
-            SearchyConditon _sc = new SearchyConditon(new SearchyFilter { Value = "Files", Rule = SearchyRule.Contains, Field = "Name" });
+            SearchyCondition _sc = new SearchyCondition(new SearchyFilter { Value = "Files", Rule = SearchyRule.Contains, Field = "Name" });
             _sq.Conditions.Add(_sc);
-            SearchyConditon _sc2 = new SearchyConditon(new SearchyFilter { Value = 2000, Rule = SearchyRule.EqualsTo, Field = "MaxDocSize" });
+            SearchyCondition _sc2 = new SearchyCondition(new SearchyFilter { Value = 2000, Rule = SearchyRule.EqualsTo, Field = "MaxDocSize" });
 
             var _data = _context.UseDms().Repositories.Search(_sq).ToList();
             Assert.AreEqual(7, _data.Count);
