@@ -41,24 +41,24 @@ namespace SW.Searchy
 
         static Expression BuildInnerExpression<TEntity>(Expression Parameter, ISearchyFilter filter)
         {
-            Expression _member = null;
-            Type _membertype = null;
+            Expression member = null;
+            Type memberType = null;
 
             if (filter.Field.StartsWith("."))
             {
                 var _mems = filter.Field.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
-                _member = Parameter;
-                _membertype = typeof(TEntity);
+                member = Parameter;
+                memberType = typeof(TEntity);
                 foreach (var _s in _mems)
                 {
-                    _member = Expression.Property(_member, _s);
-                    _membertype = _membertype.GetProperty(_s, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance).PropertyType;
+                    member = Expression.Property(member, _s);
+                    memberType = memberType.GetProperty(_s, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance).PropertyType;
                 }
             }
             else
             {
-                _member = Expression.Property(Parameter, filter.Field);
-                _membertype = typeof(TEntity).GetProperty(filter.Field, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance).PropertyType;
+                member = Expression.Property(Parameter, filter.Field);
+                memberType = typeof(TEntity).GetProperty(filter.Field, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance).PropertyType;
             }
 
             //Expression _condition = null;
@@ -67,8 +67,8 @@ namespace SW.Searchy
             var _constcoll = filter.Value as ICollection;
             if (_constcoll is null)
             {
-                constant = Expression.Constant(ConvertObjectToType(filter.Value, _membertype));
-                constant = Expression.Convert(constant, _membertype);
+                constant = Expression.Constant(ConvertObjectToType(filter.Value, memberType));
+                constant = Expression.Convert(constant, memberType);
             }
 
             switch (filter.Rule)
@@ -93,37 +93,37 @@ namespace SW.Searchy
                         }
                         MethodInfo method = typeof(string).GetMethod(_method, new System.Type[] { typeof(string) });
                         string str = System.Convert.ToString(filter.Value);
-                        return Expression.Call(_member, method, Expression.Constant(filter.Value, filter.Value.GetType()));
+                        return Expression.Call(member, method, Expression.Constant(filter.Value, filter.Value.GetType()));
                     }
 
                 case SearchyRule.EqualsTo:
                     {
-                        return Expression.Equal(_member, constant);
+                        return Expression.Equal(member, constant);
                     }
 
                 case SearchyRule.NotEqualsTo:
                     {
-                        return Expression.NotEqual(_member, constant);
+                        return Expression.NotEqual(member, constant);
                     }
 
                 case SearchyRule.LessThan:
                     {
-                        return Expression.LessThan(_member, constant);
+                        return Expression.LessThan(member, constant);
                     }
 
                 case SearchyRule.LessThanOrEquals:
                     {
-                        return Expression.LessThanOrEqual(_member, constant);
+                        return Expression.LessThanOrEqual(member, constant);
                     }
 
                 case SearchyRule.GreaterThan:
                     {
-                        return Expression.GreaterThan(_member, constant);
+                        return Expression.GreaterThan(member, constant);
                     }
 
                 case SearchyRule.GreaterThanOrEquals:
                     {
-                        return Expression.GreaterThanOrEqual(_member, constant);
+                        return Expression.GreaterThanOrEqual(member, constant);
                     }
 
                 case SearchyRule.EqualsToList:
@@ -131,14 +131,14 @@ namespace SW.Searchy
                         if (_constcoll.Count > 0)
                         {
                             MethodInfo _method = typeof(Enumerable).GetMethods().Where(o => o.Name == "Contains" & o.GetParameters().Count() == 2).First();
-                            _method = _method.MakeGenericMethod(_membertype);
+                            _method = _method.MakeGenericMethod(memberType);
                             dynamic _ienumerable = null;
                             Type _t1 = typeof(List<>);
-                            _ienumerable = Activator.CreateInstance(_t1.MakeGenericType(new[] { _membertype }));
+                            _ienumerable = Activator.CreateInstance(_t1.MakeGenericType(new[] { memberType }));
                             foreach (var _i in _constcoll)
-                                _ienumerable.Add(ConvertObjectToType(_i, _membertype));
+                                _ienumerable.Add(ConvertObjectToType(_i, memberType));
                             filter.Value = _ienumerable;
-                            return Expression.Call(_method, new[] { Expression.Constant(filter.Value), _member });
+                            return Expression.Call(_method, new[] { Expression.Constant(filter.Value), member });
                         }
                         else
                             return null;
@@ -146,7 +146,8 @@ namespace SW.Searchy
 
                 default:
                     {
-                        throw new NotImplementedException();
+                        return null;
+                        //throw new NotImplementedException();
                     }
             }
         }
