@@ -6,17 +6,18 @@ namespace SW.Searchy
 {
     public static class SearchyFilterConfigType
     {
-        public const string String = "string";
+        public const string Text = "text";
         public const string Date = "date";
-        public const string Int = "int";
-        public const string Decimal = "decimal";
+        public const string Number = "numeric";
+        public const string Boolean = "boolean";
+
 
         public static ICollection<SearchyRule> RulesFor(string dataType)
         {
             switch (dataType)
             {
-                case String:
-                    {
+                case Text:
+
                         return new SearchyRule[]
                         {
                             SearchyRule.EqualsTo,
@@ -24,10 +25,9 @@ namespace SW.Searchy
                             SearchyRule.Contains,
                             SearchyRule.StartsWith,
                         };
-                    }
-                case Int:
-                case Decimal:
-                    {
+
+                case Number:
+
                         return new SearchyRule[]
                         {
                             SearchyRule.EqualsTo,
@@ -38,9 +38,9 @@ namespace SW.Searchy
                             SearchyRule.GreaterThanOrEquals,
 
                         };
-                    }
+
                 case Date:
-                    {
+
                         return new SearchyRule[]
                         {
                             SearchyRule.LessThan,
@@ -48,10 +48,13 @@ namespace SW.Searchy
                             SearchyRule.GreaterThan,
                             SearchyRule.GreaterThanOrEquals,
                         };
-                    }
-                    //case _ : return Enum.GetValues(typeof(SearchyRule));
 
+                case Boolean:
 
+                        return new SearchyRule[]
+                        {
+                            SearchyRule.EqualsTo
+                        };
 
             }
 
