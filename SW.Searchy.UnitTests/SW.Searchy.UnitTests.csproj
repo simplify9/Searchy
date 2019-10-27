@@ -19,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SW.Searchy.Client\SW.Searchy.Client.csproj" />
     <ProjectReference Include="..\SW.Searchy\SW.Searchy.csproj" />
   </ItemGroup>
 

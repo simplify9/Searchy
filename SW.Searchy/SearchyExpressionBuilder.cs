@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SW.PrimitiveTypes;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -337,9 +338,13 @@ namespace SW.Searchy
             if (value is null) return null;
 
             var t = Nullable.GetUnderlyingType(type);
-            if (t != null) type = t;
+            if (t != null)
+            {
+                type = t;
+                if (string.IsNullOrEmpty(value.ToString())) return null;
+            }
 
-            return Convert.ChangeType(value, type);  
+            return Convert.ChangeType(value, type);
 
         }
 

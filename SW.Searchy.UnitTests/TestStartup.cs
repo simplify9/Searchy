@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SW.PrimitiveTypes;
-using SW.Searchy.UnitTests.Mock;
+
 
 namespace SW.Searchy.UnitTests 
 {
@@ -23,8 +23,8 @@ namespace SW.Searchy.UnitTests
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers().AddApplicationPart(typeof(SearchyController).Assembly);
-            services.AddSingleton<ISearchyService, MockSearchyService>();
+            //services.AddControllers().AddApplicationPart(typeof(SearchyController).Assembly);
+            //services.AddSingleton<ISearchyService, MockSearchyService>();
 
         }
 

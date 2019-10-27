@@ -9,6 +9,7 @@ using System.Xml.Linq;
 using Microsoft.Data.Sqlite;
 using SW.Dms;
 using System.Collections.Generic;
+using SW.PrimitiveTypes;
 
 namespace SW.Searchy.UnitTests
 {

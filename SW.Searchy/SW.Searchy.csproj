@@ -11,11 +11,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
-    <PackageReference Include="SimplyWorks.PrimitiveTypes" Version="2019.10.17.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\SW.Searchy.Models\SW.Searchy.Models.csproj" />
+    <PackageReference Include="SimplyWorks.PrimitiveTypes" Version="2019.10.27.1" />
   </ItemGroup>
 
 </Project>
