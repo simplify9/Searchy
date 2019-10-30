@@ -86,9 +86,11 @@ namespace SW.Searchy.UnitTests
         public void SearchyWithAndFilter()
         {
             SearchyQuery _sq = new SearchyQuery();
-            List<SearchyFilter> _fol = new List<SearchyFilter>();
-            _fol.Add(new SearchyFilter { Value = "Files", Rule = SearchyRule.Contains, Field = "Name" });
-            _fol.Add(new SearchyFilter { Value = 2000, Rule = SearchyRule.EqualsTo, Field = "MaxDocSize" });
+            List<SearchyFilter> _fol = new List<SearchyFilter>
+            {
+                new SearchyFilter { Value = "Files", Rule = SearchyRule.Contains, Field = "Name" },
+                new SearchyFilter { Value = 2000, Rule = SearchyRule.EqualsTo, Field = "MaxDocSize" }
+            };
 
             SearchyCondition _sc = new SearchyCondition(_fol);
             _sq.Conditions.Add(_sc);
