@@ -153,26 +153,26 @@ namespace SW.Searchy
             }
         }
 
-        static void BuildOrderBy<U, TEntity>(SearchyOrder OO, ref IQueryable<TEntity> Query)
+        static void BuildOrderBy<U, TEntity>(SearchySort OO, ref IQueryable<TEntity> Query)
         {
             ParameterExpression pe = Expression.Parameter(typeof(TEntity), "");
-            if (OO.SortOrder == SearchyOrder.Order.ASC)
-                Query = Query.OrderBy(Expression.Lambda<Func<TEntity, U>>(Expression.Property(pe, OO.MemberName), new ParameterExpression[] { pe }));
+            if (OO.Sort == SearchySortOrder.ASC)
+                Query = Query.OrderBy(Expression.Lambda<Func<TEntity, U>>(Expression.Property(pe, OO.Field), new ParameterExpression[] { pe }));
             else
-                Query = Query.OrderByDescending(Expression.Lambda<Func<TEntity, U>>(Expression.Property(pe, OO.MemberName), new ParameterExpression[] { pe }));
+                Query = Query.OrderByDescending(Expression.Lambda<Func<TEntity, U>>(Expression.Property(pe, OO.Field), new ParameterExpression[] { pe }));
         }
 
-        static void BuildThenBy<U, TEntity>(SearchyOrder OO, ref IQueryable<TEntity> Query)
+        static void BuildThenBy<U, TEntity>(SearchySort OO, ref IQueryable<TEntity> Query)
         {
             ParameterExpression pe = Expression.Parameter(typeof(TEntity), "");
             IOrderedQueryable<TEntity> OrderedQuery = (IOrderedQueryable<TEntity>)Query;
-            if (OO.SortOrder == SearchyOrder.Order.ASC)
-                Query = OrderedQuery.ThenBy(Expression.Lambda<Func<TEntity, U>>(Expression.Property(pe, OO.MemberName), new ParameterExpression[] { pe }));
+            if (OO.Sort == SearchySortOrder.ASC)
+                Query = OrderedQuery.ThenBy(Expression.Lambda<Func<TEntity, U>>(Expression.Property(pe, OO.Field), new ParameterExpression[] { pe }));
             else
-                Query = OrderedQuery.ThenByDescending(Expression.Lambda<Func<TEntity, U>>(Expression.Property(pe, OO.MemberName), new ParameterExpression[] { pe }));
+                Query = OrderedQuery.ThenByDescending(Expression.Lambda<Func<TEntity, U>>(Expression.Property(pe, OO.Field), new ParameterExpression[] { pe }));
         }
 
-        public static void BuildOrderByThenBy<TEntity>(SearchyOrder OO, Type Type, ref IQueryable<TEntity> Query, bool IsMainOrderBy)
+        public static void BuildOrderByThenBy<TEntity>(SearchySort OO, Type Type, ref IQueryable<TEntity> Query, bool IsMainOrderBy)
         {
             switch (true)
             {

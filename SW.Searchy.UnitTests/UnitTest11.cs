@@ -55,7 +55,7 @@ namespace SW.Searchy.UnitTests
             SearchyQuery _sq = new SearchyQuery();
             SearchyCondition _sc = new SearchyCondition(new SearchyFilter { Value = "Files", Rule = SearchyRule.Contains, Field = "Name" });
             _sq.Conditions.Add(_sc);
-            List<SearchyOrder> _ob = new List<SearchyOrder> { new SearchyOrder("Name", SearchyOrder.Order.ASC) };
+            List<SearchySort > _ob = new List<SearchySort> { new SearchySort("Name", SearchySortOrder.ASC) };
 
             var _data = _context.UseDms().Repositories.Search(_sq, _ob, 0, 0).ToList();
             Assert.AreEqual(7, _data.Count);
@@ -70,7 +70,7 @@ namespace SW.Searchy.UnitTests
             SearchyQuery _sq = new SearchyQuery();
             SearchyCondition _sc = new SearchyCondition(new SearchyFilter { Value = "Files", Rule = SearchyRule.Contains, Field = "Name" });
             _sq.Conditions.Add(_sc);
-            List<SearchyOrder> _ob = new List<SearchyOrder> { new SearchyOrder("Name", SearchyOrder.Order.ASC) };
+            List<SearchySort> _ob = new List<SearchySort> { new SearchySort("Name", SearchySortOrder.ASC) };
 
             var _data0 = _context.UseDms().Repositories.Search(_sq, _ob, 2, 0).ToList();
             Assert.AreEqual(2, _data0.Count);

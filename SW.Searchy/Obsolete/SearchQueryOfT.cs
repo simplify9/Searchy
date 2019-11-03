@@ -12,7 +12,7 @@ namespace SW.Searchy
     {
 
         
-        public ICollection< SearchyOrder> Order { get; set; } = new List<SearchyOrder>();
+        public ICollection<SearchySort> Order { get; set; } = new List<SearchySort>();
 
         public Paging Paging { get; set; }
 
@@ -44,13 +44,13 @@ namespace SW.Searchy
             if (Order != null && Order.Count() > 0)
             {
                 var _MainOrderBy = Order.FirstOrDefault();
-                Type _MainSortMemberType = typeof(TEntity).GetProperty(_MainOrderBy.MemberName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance).PropertyType;
+                Type _MainSortMemberType = typeof(TEntity).GetProperty(_MainOrderBy.Field, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance).PropertyType;
                 SearchyExpressionBuilder.BuildOrderByThenBy(_MainOrderBy, _MainSortMemberType, ref queryable, true);
-                List<SearchyOrder> _EOO = new List<SearchyOrder>();
+                List<SearchySort> _EOO = new List<SearchySort>();
                 _EOO.Add(_MainOrderBy);
                 foreach (var _OO in Order.Except(_EOO.AsEnumerable()))
                 {
-                    Type _SortMemberType = typeof(TEntity).GetProperty(_OO.MemberName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance).PropertyType;
+                    Type _SortMemberType = typeof(TEntity).GetProperty(_OO.Field, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance).PropertyType;
                     SearchyExpressionBuilder.BuildOrderByThenBy(_OO, _SortMemberType, ref queryable, false);
                 }
             }

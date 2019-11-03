@@ -35,7 +35,7 @@ namespace SW.Searchy
 
         public static IQueryable<TEntity> Search<TEntity>(this IQueryable<TEntity> Target,
             IEnumerable<SearchyCondition> conditions,
-            IEnumerable<SearchyOrder> orders = null,
+            IEnumerable<SearchySort> orders = null,
             int pageSize = 0,
             int PageIndex = 0)
         {
@@ -44,7 +44,7 @@ namespace SW.Searchy
 
         public static IQueryable<TEntity> Search<TEntity>(this IQueryable<TEntity> Target, 
             SearchyQuery SearchQuery, 
-            IEnumerable<SearchyOrder> OrderByList = null, 
+            IEnumerable<SearchySort> OrderByList = null, 
             int PageSize = 0, 
             int PageIndex = 0)
         {
@@ -65,13 +65,13 @@ namespace SW.Searchy
             if (OrderByList != null && OrderByList.Count() > 0)
             {
                 var _MainOrderBy = OrderByList.FirstOrDefault();
-                Type _MainSortMemberType = typeof(TEntity).GetProperty(_MainOrderBy.MemberName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance).PropertyType;
+                Type _MainSortMemberType = typeof(TEntity).GetProperty(_MainOrderBy.Field, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance).PropertyType;
                 SearchyExpressionBuilder.BuildOrderByThenBy(_MainOrderBy, _MainSortMemberType, ref Target, true);
-                List<SearchyOrder> _EOO = new List<SearchyOrder>();
+                List<SearchySort> _EOO = new List<SearchySort>();
                 _EOO.Add(_MainOrderBy);
                 foreach (var _OO in OrderByList.Except(_EOO.AsEnumerable()))
                 {
-                    Type _SortMemberType = typeof(TEntity).GetProperty(_OO.MemberName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance).PropertyType;
+                    Type _SortMemberType = typeof(TEntity).GetProperty(_OO.Field, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance).PropertyType;
                     SearchyExpressionBuilder.BuildOrderByThenBy(_OO, _SortMemberType, ref Target, false);
                 }
             }
