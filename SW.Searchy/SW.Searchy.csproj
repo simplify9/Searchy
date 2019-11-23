@@ -15,7 +15,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.6.0" />
-    <PackageReference Include="SimplyWorks.PrimitiveTypes" Version="2019.11.19.1" />
+    <PackageReference Include="SimplyWorks.PrimitiveTypes" Version="2019.11.22.1" />
   </ItemGroup>
 
 </Project>
