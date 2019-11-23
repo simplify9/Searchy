@@ -11,7 +11,7 @@ namespace SW.Searchy
         {
             if (BeginsWith is null)
             {
-                throw new ArgumentNullException(nameof(BeginsWith));
+                throw new SWException(nameof(BeginsWith));
             }
 
             var _sc = new SearchyCondition();

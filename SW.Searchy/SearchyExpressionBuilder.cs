@@ -148,7 +148,6 @@ namespace SW.Searchy
                 default:
                     {
                         return null;
-                        //throw new NotImplementedException();
                     }
             }
         }
@@ -241,97 +240,11 @@ namespace SW.Searchy
 
                 default:
                     {
-                        throw new Exception("Unsupported sort datatype: " + Type.ToString());
-                        //break;
+                        throw new SWException("Unsupported sort datatype: " + Type.ToString());
                     }
             }
         }
 
-        //static dynamic ConvertObjectToType(object TargetObject, Type TargetType)
-        //{
-        //    if (TargetObject is null)
-        //        return null;
-
-        //    var _ObjType = TargetObject.GetType();
-
-        //    switch (true)
-        //    {
-        //        case object _ when _ObjType == TargetType:
-        //            {
-        //                return TargetObject;
-        //            }
-
-        //        case object _ when TargetType == typeof(bool):
-        //        case object _ when TargetType == typeof(bool?):
-        //            {
-        //                return System.Convert.ToBoolean(TargetObject);
-        //            }
-
-        //        case object _ when TargetType == typeof(long):
-        //        case object _ when TargetType == typeof(long?):
-        //            {
-        //                return System.Convert.ToInt64(TargetObject);
-        //            }
-
-        //        case object _ when TargetType == typeof(int):
-        //        case object _ when TargetType == typeof(int?):
-        //            {
-        //                return System.Convert.ToInt32(TargetObject);
-        //            }
-
-        //        case object _ when TargetType == typeof(double):
-        //        case object _ when TargetType == typeof(double?):
-        //            {
-        //                return System.Convert.ToDouble(TargetObject);
-        //            }
-
-        //        case object _ when TargetType == typeof(short):
-        //        case object _ when TargetType == typeof(short?):
-        //            {
-        //                return System.Convert.ToInt16(TargetObject);
-        //            }
-
-        //        case object _ when TargetType == typeof(byte):
-        //        case object _ when TargetType == typeof(byte?):
-        //            {
-        //                return System.Convert.ToByte(TargetObject);
-        //            }
-
-        //        case object _ when TargetType == typeof(DateTime):
-        //        case object _ when TargetType == typeof(DateTime?):
-        //            {
-        //                return System.Convert.ToDateTime(TargetObject);
-        //            }
-
-        //        case object _ when TargetType == typeof(DateTime):
-        //        case object _ when TargetType == typeof(DateTime?):
-        //            {
-        //                return System.Convert.ToDateTime(TargetObject);
-        //            }
-
-        //        case object _ when TargetType == typeof(decimal):
-        //        case object _ when TargetType == typeof(decimal?):
-        //            {
-        //                return System.Convert.ToDecimal(TargetObject);
-        //            }
-
-        //        case object _ when TargetType == typeof(Guid):
-        //        case object _ when TargetType == typeof(Guid?):
-        //            {
-        //                if (TargetObject.GetType() == typeof(string))
-        //                    return new Guid(System.Convert.ToString(TargetObject));
-        //                else if (TargetObject.GetType() == typeof(Guid))
-        //                    return (Guid)TargetObject;
-        //                break;
-        //            }
-
-        //        default:
-        //            {
-        //                throw new Exception("Unsupported type conversion.");
-        //            }
-        //    }
-        //    return null;
-        //}
 
         static dynamic ConvertValueToType(object value, Type type)
         {
