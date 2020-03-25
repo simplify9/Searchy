@@ -9,11 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Extensions\SearchConditionExtensions.cs" />
-    <Compile Remove="Extensions\SearchQueryExtensions.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="SimplyWorks.PrimitiveTypes" Version="2020.3.22.4" />
   </ItemGroup>
 

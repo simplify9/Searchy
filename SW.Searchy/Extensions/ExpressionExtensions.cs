@@ -21,7 +21,7 @@ namespace SW.Searchy
 
                 foreach (var searchyFilter in searchyCondition.Filters)
                 {
-                    var filterExpression = parameter.BuildInnerExpression<TEntity>(searchyFilter);
+                    var filterExpression = parameter.BuildFilterExpression<TEntity>(searchyFilter);
 
                     if (conditionExpression == null)
                         conditionExpression = filterExpression;
@@ -39,27 +39,28 @@ namespace SW.Searchy
             return finalExpression;
         }
 
-        static Expression BuildInnerExpression<TEntity>(this Expression parameter, ISearchyFilter filter)
+        static Expression BuildFilterExpression<TEntity>(this Expression parameter, ISearchyFilter filter)
         {
-            Expression fieldNameExpression = null;
-            Type fieldType = null;
+            //Expression fieldNameExpression = null;
+            //Type fieldType = null;
 
-            if (filter.Field.StartsWith("."))
+            //if (filter.Field.Contains("."))
+            //{
+            var fieldSegments = filter.Field.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+            var fieldNameExpression = parameter;
+            var fieldType = typeof(TEntity);
+
+            foreach (var fieldSegment in fieldSegments)
             {
-                var _mems = filter.Field.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
-                fieldNameExpression = parameter;
-                fieldType = typeof(TEntity);
-                foreach (var _s in _mems)
-                {
-                    fieldNameExpression = Expression.Property(fieldNameExpression, _s);
-                    fieldType = fieldType.GetProperty(_s, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance).PropertyType;
-                }
+                fieldNameExpression = Expression.Property(fieldNameExpression, fieldSegment);
+                fieldType = fieldType.GetProperty(fieldSegment, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance).PropertyType;
             }
-            else
-            {
-                fieldNameExpression = Expression.Property(parameter, filter.Field);
-                fieldType = typeof(TEntity).GetProperty(filter.Field, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance).PropertyType;
-            }
+            //}
+            //else
+            //{
+            //    fieldNameExpression = Expression.Property(parameter, filter.Field);
+            //    fieldType = typeof(TEntity).GetProperty(filter.Field, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance).PropertyType;
+            //}
 
             switch (filter.Rule)
             {
@@ -100,9 +101,9 @@ namespace SW.Searchy
                     var addMethod = equalToListListType.GetMethod("Add");
                     var equalToList = Activator.CreateInstance(equalToListListType);
                     foreach (var item in (IEnumerable)filter.Value)
-                        addMethod.Invoke(equalToList, new object[] { ConvertValueToType(item, fieldType) });// _ienumerable.Add(ConvertValueToType(_i, memberType));
-                    filter.Value = equalToList;
-                    return Expression.Call(containsMethod, new[] { Expression.Constant(filter.Value), fieldNameExpression });
+                        addMethod.Invoke(equalToList, new object[] { ConvertValueToType(item, fieldType) });
+                    //filter.Value = equalToList;
+                    return Expression.Call(containsMethod, new[] { Expression.Constant(equalToList), fieldNameExpression });
 
                 default:
                     return null;
@@ -123,15 +124,14 @@ namespace SW.Searchy
             {
                 if (index == 0)
                     rangeValues.Lower = item;
-
                 else if (index == 1)
-                {
                     rangeValues.Upper = item;
-                    break;
-                };
 
                 index++;
             }
+
+            if (index != 2)
+                throw new ArgumentException("Range rule value collection should contain exactly two values.");
 
             return rangeValues;
         }
