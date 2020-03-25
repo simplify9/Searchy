@@ -34,7 +34,7 @@ namespace SW.Searchy
         {
 
             var param = Expression.Parameter(typeof(TEntity), "TEntity");
-            var finalexp = param.BuildSearchExpression<TEntity>(conditions);
+            var finalexp = param.BuildConditionsExpression<TEntity>(conditions);
 
             if (finalexp != null)
             {
@@ -75,7 +75,7 @@ namespace SW.Searchy
         {
             var param = Expression.Parameter(typeof(TEntity), "TEntity");
             var _parammany = Expression.Parameter(typeof(TRelated), "TRelated");
-            var _finalexp = _parammany.BuildSearchExpression<TRelated>( conditions);
+            var _finalexp = _parammany.BuildConditionsExpression<TRelated>( conditions);
 
             if (_finalexp != null)
             {

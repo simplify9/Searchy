@@ -11,7 +11,7 @@ namespace SW.Searchy
 {
     internal static class ExpressionExtensions
     {
-        public static Expression BuildSearchExpression<TEntity>(this Expression parameter, IEnumerable<SearchyCondition> searchyConditions)
+        public static Expression BuildConditionsExpression<TEntity>(this Expression parameter, IEnumerable<SearchyCondition> searchyConditions)
         {
             Expression finalExpression = null;
 
@@ -99,11 +99,11 @@ namespace SW.Searchy
                     containsMethod = containsMethod.MakeGenericMethod(fieldType);
                     var equalToListListType = typeof(List<>).MakeGenericType(new[] { fieldType });
                     var addMethod = equalToListListType.GetMethod("Add");
-                    var equalToList = Activator.CreateInstance(equalToListListType);
+                    var equalToListList = Activator.CreateInstance(equalToListListType);
                     foreach (var item in (IEnumerable)filter.Value)
-                        addMethod.Invoke(equalToList, new object[] { ConvertValueToType(item, fieldType) });
+                        addMethod.Invoke(equalToListList, new object[] { ConvertValueToType(item, fieldType) });
                     //filter.Value = equalToList;
-                    return Expression.Call(containsMethod, new[] { Expression.Constant(equalToList), fieldNameExpression });
+                    return Expression.Call(containsMethod, new[] { Expression.Constant(equalToListList), fieldNameExpression });
 
                 default:
                     return null;
@@ -112,8 +112,10 @@ namespace SW.Searchy
 
         static Expression GetValueAsConstantExpression(object value, Type type)
         {
-            var constant = Expression.Constant(ConvertValueToType(value, type));
-            return Expression.Convert(constant, type);
+            Expression constantExpression = Expression.Constant(ConvertValueToType(value, type));
+            if (Nullable.GetUnderlyingType(type) != null)
+                constantExpression = Expression.Convert(constantExpression, type);
+            return constantExpression;
         }
 
         static RangeValues PopulateRangeValues(object valueCollection)
@@ -140,10 +142,10 @@ namespace SW.Searchy
         {
             if (value is null) return null;
 
-            var t = Nullable.GetUnderlyingType(type);
-            if (t != null)
+            var nakedType = Nullable.GetUnderlyingType(type);
+            if (nakedType != null)
             {
-                type = t;
+                type = nakedType;
                 if (string.IsNullOrEmpty(value.ToString())) return null;
             }
 

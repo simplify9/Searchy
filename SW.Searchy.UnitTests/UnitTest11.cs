@@ -17,6 +17,22 @@ namespace SW.Searchy.UnitTests
         //}
 
         [TestMethod]
+        public void SearchyFieldSegments()
+        {
+            //var values = FakeEmployees.Data.Take(3).Select(p => p.FirstName).ToArray();
+            var sc = new SearchyCondition(new SearchyFilter
+            {
+                Value = "120",
+                Rule = SearchyRule.GreaterThan,
+                Field = $"{nameof(Employee.Salary)}.{nameof(Money.Amount)}"
+            });
+
+            var data = FakeEmployees.Data.Search(sc);
+
+            //Assert.AreEqual(FakeEmployees.Data.Where(p => values.Contains(p.FirstName)).Count(), data.Count());
+        }
+
+        [TestMethod]
         public void SearchyEqualsToList()
         {
             var values = FakeEmployees.Data.Take(3).Select(p => p.FirstName).ToArray();
