@@ -1,121 +1,91 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
-//using SW.Dms.Services;
-using SW.Common;
-using System.Xml.Linq;
-using Microsoft.Data.Sqlite;
-using SW.Dms;
 using System.Collections.Generic;
 using SW.PrimitiveTypes;
 
 namespace SW.Searchy.UnitTests
 {
     [TestClass]
-    public class UnitTest11 : IDisposable
+    public class UnitTest11
     {
-        private readonly DbCtxt _context;
-        private readonly SqliteConnection _connection;
 
-        public UnitTest11()
+        //[ClassInitialize]
+        //public static void ClassInitialize(TestContext tcontext)
+        //{
+        //}
+
+        [TestMethod]
+        public void SearchyEqualsToList()
         {
-            _connection = new SqliteConnection("DataSource=:memory:");
-            _connection.Open();
-            var options = new DbContextOptionsBuilder<DbCtxt>()
-                .UseSqlite(_connection)
-                .EnableSensitiveDataLogging(true)
-                .Options;
+            var values = FakeEmployees.Data.Take(3).Select(p => p.FirstName).ToArray();
+            var sc = new SearchyCondition(new SearchyFilter
+            {
+                Value = values,
+                Rule = SearchyRule.EqualsToList,
+                Field = nameof(Employee.FirstName)
+            });
 
-            // Create the schema in the database
-            _context = new DbCtxt(options);
-            _context.Database.EnsureCreated();
+            var data = FakeEmployees.Data.Search(sc);
 
-
+            Assert.AreEqual(FakeEmployees.Data.Where(p => values.Contains(p.FirstName)).Count(), data.Count());
         }
 
         [TestMethod]
-        public void Searchy()
+        public void SearchyRange()
         {
-           // var _data = new List<string>() { "Files", "Fil" };
-            
-            //SearchyQuery  _sq= new SearchyQuery() ;
-            SearchyCondition _sc = new SearchyCondition( new SearchyFilter { Value = new List<string>() { "Files", "Fil" }, Rule=SearchyRule.EqualsToList, Field= "Name" });
-            //_sq.Conditions.Add(_sc);  
-            var _data =_context.UseDms().Repositories.Search(_sc).ToList();
+            var values = new int[] { 30, 40 };
+            var sc = new SearchyCondition(new SearchyFilter
+            {
+                Value = values,
+                Rule = SearchyRule.Range,
+                Field = nameof(Employee.Age)
+            });
 
-            Assert.AreNotEqual(7, _data.Count);
+            var data = FakeEmployees.Data.Search(sc);
+
+            Assert.AreEqual(FakeEmployees.Data.Where(p => p.Age >= values[0] && p.Age < values[1]).Count(), data.Count());
         }
 
         [TestMethod]
-        public void SearchyWithOrderBy()
+        public void SearchyOrderBy()
         {
-            //SearchyQuery _sq = new SearchyQuery();
-            SearchyCondition _sc = new SearchyCondition(new SearchyFilter { Value = "Files", Rule = SearchyRule.Contains, Field = "Name" });
-            //_sq.Conditions.Add(_sc);
-            List<SearchySort > _ob = new List<SearchySort> { new SearchySort("Name", SearchySortOrder.ASC) };
-
-            var _data = _context.UseDms().Repositories.Search(new SearchyCondition[] { _sc }, _ob, 0, 0).ToList();
-            Assert.AreEqual(7, _data.Count);
-
-            
-
+            SearchyCondition _sc = new SearchyCondition(new SearchyFilter { Value = FakeEmployees.Data.First().FirstName, Rule = SearchyRule.Contains, Field = nameof(Employee.FirstName) });
+            List<SearchySort> _ob = new List<SearchySort> { new SearchySort(nameof(Employee.LastName), SearchySortOrder.ASC) };
+            var _data = FakeEmployees.Data.Search(new SearchyCondition[] { _sc }, _ob, 0, 0).ToList();
         }
 
         [TestMethod]
-        public void SearchyWithPaging()
+        public void SearchyPaging()
         {
-            //SearchyQuery _sq = new SearchyQuery();
-            SearchyCondition _sc = new SearchyCondition(new SearchyFilter { Value = "Files", Rule = SearchyRule.Contains, Field = "Name" });
-            //_sq.Conditions.Add(_sc);
-            List<SearchySort> _ob = new List<SearchySort> { new SearchySort("Name", SearchySortOrder.ASC) };
-
-            var _data0 = _context.UseDms().Repositories.Search(new SearchyCondition[] { _sc }, _ob, 2, 0).ToList();
-            Assert.AreEqual(2, _data0.Count);
-
-            var _data1 = _context.UseDms().Repositories.Search(new SearchyCondition[] { _sc }, _ob,2, 1).ToList();
-            Assert.AreEqual(2, _data1.Count);
-
-            var _data2 = _context.UseDms().Repositories.Search(new SearchyCondition[] { _sc }, _ob, 3, 2).ToList();
-            Assert.AreEqual(1, _data2.Count);
+            var _data0 = FakeEmployees.Data.Search(new SearchyCondition[] { }, null, 10, 3).ToList();
+            Assert.AreEqual(10, _data0.Count);
         }
 
         [TestMethod]
-        public void SearchyWithAndFilter()
+        public void SearchyMultipleFilters()
         {
-            //SearchyQuery _sq = new SearchyQuery();
             List<SearchyFilter> _fol = new List<SearchyFilter>
             {
-                new SearchyFilter { Value = "Files", Rule = SearchyRule.Contains, Field = "Name" },
-                new SearchyFilter { Value = 2000, Rule = SearchyRule.EqualsTo, Field = "MaxDocSize" }
+                new SearchyFilter { Value = FakeEmployees.Data.First().FirstName, Rule = SearchyRule.Contains, Field = nameof(Employee.FirstName)  },
+                new SearchyFilter { Value = FakeEmployees.Data.First().LastName, Rule = SearchyRule.EqualsTo, Field = nameof(Employee.LastName) }
             };
 
             SearchyCondition _sc = new SearchyCondition(_fol);
-            //_sq.Conditions.Add(_sc);
-
-            var _data = _context.UseDms().Repositories.Search(_sc).ToList();
-            Assert.AreEqual(2, _data.Count);
+            var _data = FakeEmployees.Data.Search(_sc).ToList();
 
         }
 
         [TestMethod]
-        public void SearchyWithOrFilter()
+        public void SearchyMultipleConditions()
         {
-            //SearchyQuery _sq = new SearchyQuery();
-            SearchyCondition _sc = new SearchyCondition(new SearchyFilter { Value = "Files", Rule = SearchyRule.Contains, Field = "Name" });
-            //_sq.Conditions.Add(_sc);
-            //SearchyCondition _sc2 = new SearchyCondition(new SearchyFilter { Value = 2000, Rule = SearchyRule.EqualsTo, Field = "MaxDocSize" });
+            SearchyCondition _sc1 = new SearchyCondition(nameof(Employee.FirstName), SearchyRule.EqualsTo, FakeEmployees.Data.First().FirstName);
+            SearchyCondition _sc2 = new SearchyCondition(nameof(Employee.LastName), SearchyRule.EqualsTo, FakeEmployees.Data.First().LastName);
 
-            var _data = _context.UseDms().Repositories.Search(_sc).ToList();
-            Assert.AreEqual(7, _data.Count);
+            var _data = FakeEmployees.Data.Search(new SearchyCondition[] { _sc1, _sc2 }).ToList();
         }
 
-        public void Dispose()
-        {
-            _context.Dispose();
-            _connection.Close();
-            _connection.Dispose();
-        }
+
     }
 }

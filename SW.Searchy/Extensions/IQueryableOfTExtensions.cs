@@ -11,7 +11,6 @@ namespace SW.Searchy
 {
     public static class IQueryableOfTExtensions
     {
-
         public static IQueryable<TEntity> Search<TEntity>(this IQueryable<TEntity> target, string field, object valueEquals)
         {
             return Search(target, new SearchyCondition[] { new SearchyCondition(field, SearchyRule.EqualsTo, valueEquals) });
@@ -35,7 +34,7 @@ namespace SW.Searchy
         {
 
             var param = Expression.Parameter(typeof(TEntity), "TEntity");
-            Expression finalexp = SearchyExpressionBuilder.BuildSearchExpression<TEntity>(param, conditions);
+            var finalexp = param.BuildSearchExpression<TEntity>(conditions);
 
             if (finalexp != null)
             {
@@ -45,21 +44,20 @@ namespace SW.Searchy
 
             if (orders != null && orders.Count() > 0)
             {
-                var _MainOrderBy = orders.FirstOrDefault();
+                var mainOrderBy = orders.FirstOrDefault();
+                var mainSortMemberType = typeof(TEntity).GetProperty(mainOrderBy.Field, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance).PropertyType;
 
-                var _MainSortMemberType = typeof(TEntity).GetProperty(_MainOrderBy.Field, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance).PropertyType;
+                target = target.BuildOrderByThenBy(mainOrderBy, mainSortMemberType, true);
 
-                SearchyExpressionBuilder.BuildOrderByThenBy(_MainOrderBy, _MainSortMemberType, ref target, true);
-                
-                var _EOO = new List<SearchySort>
+                var searchySorts = new List<SearchySort>
                 {
-                    _MainOrderBy
+                    mainOrderBy
                 };
 
-                foreach (var _OO in orders.Except(_EOO.AsEnumerable()))
+                foreach (var searchySort in orders.Except(searchySorts.AsEnumerable()))
                 {
-                    var _SortMemberType = typeof(TEntity).GetProperty(_OO.Field, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance).PropertyType;
-                    SearchyExpressionBuilder.BuildOrderByThenBy(_OO, _SortMemberType, ref target, false);
+                    var sortMemberType = typeof(TEntity).GetProperty(searchySort.Field, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance).PropertyType;
+                    target = target.BuildOrderByThenBy(searchySort, sortMemberType, false);
                 }
             }
 
@@ -76,19 +74,100 @@ namespace SW.Searchy
             IEnumerable<SearchyCondition> conditions)
         {
             var param = Expression.Parameter(typeof(TEntity), "TEntity");
-            ParameterExpression _parammany = Expression.Parameter(typeof(TRelated), "TRelated");
-            Expression _finalexp = SearchyExpressionBuilder.BuildSearchExpression<TRelated>(_parammany, conditions);
+            var _parammany = Expression.Parameter(typeof(TRelated), "TRelated");
+            var _finalexp = _parammany.BuildSearchExpression<TRelated>( conditions);
 
             if (_finalexp != null)
             {
-                var _methodany = typeof(Enumerable).GetMethods().Where(m => m.Name == "Any" & m.GetParameters().Length == 2).Single().MakeGenericMethod(typeof(TRelated));
-                var _innerfunction = Expression.Lambda<Func<TRelated, bool>>(_finalexp, _parammany);
-                var _finalwhereexp = Expression.Lambda<Func<TEntity, bool>>(Expression.Call(_methodany, Expression.Property(param, typeof(TEntity).GetProperty(navigationProperty, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance)), _innerfunction), new ParameterExpression[] { param });
-                target = target.Where(_finalwhereexp);
+                var anyMethond = typeof(Enumerable).GetMethods().Where(m => m.Name == "Any" & m.GetParameters().Length == 2).Single().MakeGenericMethod(typeof(TRelated));
+                var innerFunction = Expression.Lambda<Func<TRelated, bool>>(_finalexp, _parammany);
+                var finalWherEexp = Expression.Lambda<Func<TEntity, bool>>(Expression.Call(anyMethond, Expression.Property(param, typeof(TEntity).GetProperty(navigationProperty, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance)), innerFunction), new ParameterExpression[] { param });
+                target = target.Where(finalWherEexp);
             }
 
             return target;
         }
+
+        static IQueryable<TEntity> BuildOrderBy<U, TEntity>(this IQueryable<TEntity> query, SearchySort searchySort)
+        {
+            ParameterExpression pe = Expression.Parameter(typeof(TEntity), "");
+            if (searchySort.Sort == SearchySortOrder.ASC)
+                return query.OrderBy(Expression.Lambda<Func<TEntity, U>>(Expression.Property(pe, searchySort.Field), new ParameterExpression[] { pe }));
+            else
+                return query.OrderByDescending(Expression.Lambda<Func<TEntity, U>>(Expression.Property(pe, searchySort.Field), new ParameterExpression[] { pe }));
+        }
+
+        static IQueryable<TEntity> BuildThenBy<U, TEntity>(this IQueryable<TEntity> query, SearchySort searchySort)
+        {
+            var pe = Expression.Parameter(typeof(TEntity), "");
+            var orderedQuery = (IOrderedQueryable<TEntity>)query;
+
+            if (searchySort.Sort == SearchySortOrder.ASC)
+                return orderedQuery.ThenBy(Expression.Lambda<Func<TEntity, U>>(Expression.Property(pe, searchySort.Field), new ParameterExpression[] { pe }));
+            else
+                return orderedQuery.ThenByDescending(Expression.Lambda<Func<TEntity, U>>(Expression.Property(pe, searchySort.Field), new ParameterExpression[] { pe }));
+        }
+
+        static IQueryable<TEntity> BuildOrderByThenBy<TEntity>(this IQueryable<TEntity> query, SearchySort searchySort, Type type, bool mainOrderBy)
+        {
+            switch (true)
+            {
+                case object _ when type.Equals(typeof(int)):
+
+                    if (mainOrderBy)
+                        return query.BuildOrderBy<int, TEntity>(searchySort);
+                    else
+                        return query.BuildThenBy<int, TEntity>(searchySort);
+
+                case object _ when type.Equals(typeof(string)):
+
+                    if (mainOrderBy)
+                        return query.BuildOrderBy<string, TEntity>(searchySort);
+                    else
+                        return query.BuildThenBy<string, TEntity>(searchySort);
+
+                case object _ when type.Equals(typeof(DateTime?)):
+
+                    if (mainOrderBy)
+                        return query.BuildOrderBy<DateTime?, TEntity>(searchySort);
+                    else
+                        return query.BuildThenBy<DateTime?, TEntity>(searchySort);
+
+                case object _ when type.Equals(typeof(DateTime)):
+
+                    if (mainOrderBy)
+                        return query.BuildOrderBy<DateTime, TEntity>(searchySort);
+                    else
+                        return query.BuildThenBy<DateTime, TEntity>(searchySort);
+
+                case object _ when type.Equals(typeof(byte)):
+
+                    if (mainOrderBy)
+                        return query.BuildOrderBy<byte, TEntity>(searchySort);
+                    else
+                        return query.BuildThenBy<byte, TEntity>(searchySort);
+
+                case object _ when type.Equals(typeof(short)):
+
+                    if (mainOrderBy)
+                        return query.BuildOrderBy<short, TEntity>(searchySort);
+                    else
+                        return query.BuildThenBy<short, TEntity>(searchySort);
+
+                case object _ when type.Equals(typeof(decimal)):
+
+                    if (mainOrderBy)
+                        return query.BuildOrderBy<decimal, TEntity>(searchySort);
+                    else
+                        return query.BuildThenBy<decimal, TEntity>(searchySort);
+
+                default:
+
+                    throw new SWException("Unsupported sort datatype: " + type.ToString());
+
+            }
+        }
+
 
 
     }
