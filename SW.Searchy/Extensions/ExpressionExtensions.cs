@@ -1,4 +1,5 @@
-﻿using SW.PrimitiveTypes;
+﻿using SW.ObjectConversion;
+using SW.PrimitiveTypes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -101,7 +102,7 @@ namespace SW.Searchy
                     var addMethod = equalToListListType.GetMethod("Add");
                     var equalToListList = Activator.CreateInstance(equalToListListType);
                     foreach (var item in (IEnumerable)filter.Value)
-                        addMethod.Invoke(equalToListList, new object[] { ConvertValueToType(item, fieldType) });
+                        addMethod.Invoke(equalToListList, new object[] { item.ConvertValueToType(fieldType) });
                     //filter.Value = equalToList;
                     return Expression.Call(containsMethod, new[] { Expression.Constant(equalToListList), fieldNameExpression });
 
@@ -112,7 +113,7 @@ namespace SW.Searchy
 
         static Expression GetValueAsConstantExpression(object value, Type type)
         {
-            Expression constantExpression = Expression.Constant(ConvertValueToType(value, type));
+            Expression constantExpression = Expression.Constant(value.ConvertValueToType(type));
             if (Nullable.GetUnderlyingType(type) != null)
                 constantExpression = Expression.Convert(constantExpression, type);
             return constantExpression;
@@ -138,19 +139,19 @@ namespace SW.Searchy
             return rangeValues;
         }
 
-        static object ConvertValueToType(object value, Type type)
-        {
-            if (value is null) return null;
+        //static object ConvertValueToType(object value, Type type)
+        //{
+        //    if (value is null) return null;
 
-            var nakedType = Nullable.GetUnderlyingType(type);
-            if (nakedType != null)
-            {
-                type = nakedType;
-                if (string.IsNullOrEmpty(value.ToString())) return null;
-            }
+        //    var nakedType = Nullable.GetUnderlyingType(type);
+        //    if (nakedType != null)
+        //    {
+        //        type = nakedType;
+        //        if (string.IsNullOrEmpty(value.ToString())) return null;
+        //    }
 
-            return Convert.ChangeType(value, type);
-        }
+        //    return Convert.ChangeType(value, type);
+        //}
 
     }
 }
