@@ -8,7 +8,7 @@ using SW.PrimitiveTypes;
 namespace SW.Searchy.UnitTests
 {
     [TestClass]
-    public class UnitTest11
+    public class UnitTest
     {
 
         //[ClassInitialize]

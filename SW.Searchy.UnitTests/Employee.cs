@@ -28,6 +28,29 @@ namespace SW.Searchy.UnitTests
         public ICollection<Leave> Leaves { get; set; }
     }
 
+    public class Leave
+    {
+        public int Days { get; set; }
+        public string Reason { get; set; }
+
+
+        public override bool Equals(object obj)
+        {
+            return obj is Leave leave &&
+                   Days == leave.Days &&
+                   Reason == leave.Reason;
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = -588109197;
+            hashCode = hashCode * -1521134295 + Days.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Reason);
+            return hashCode;
+        }
+    }
+
+
     public static class FakeEmployees
     {
 
@@ -62,27 +85,5 @@ namespace SW.Searchy.UnitTests
 
     }
 
-    public class Leave
-    {
-        public int Days { get; set; }
-        public string Reason { get; set; }
-
-        public RemoteBlob Photo { get; set; }
-
-        public override bool Equals(object obj)
-        {
-            return obj is Leave leave &&
-                   Days == leave.Days &&
-                   Reason == leave.Reason;
-        }
-
-        public override int GetHashCode()
-        {
-            int hashCode = -588109197;
-            hashCode = hashCode * -1521134295 + Days.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Reason);
-            return hashCode;
-        }
-    }
 
 }
