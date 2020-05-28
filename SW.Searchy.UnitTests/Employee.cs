@@ -53,6 +53,9 @@ namespace SW.Searchy.UnitTests
 
     public static class FakeEmployees
     {
+        static readonly Faker<Leave> testLeaves = new Faker<Leave>()
+          .RuleFor(l => l.Reason, f => f.Random.String())
+          .RuleFor(l => l.Days, f => f.Random.Int(1, 14));
 
         static readonly Faker<Employee> testUsers = new Faker<Employee>()
             //Optional: Call for objects that have complex initialization
@@ -67,19 +70,20 @@ namespace SW.Searchy.UnitTests
             .RuleFor(u => u.UserName, (f, u) => f.Internet.UserName(u.FirstName, u.LastName))
             .RuleFor(u => u.Email, (f, u) => f.Internet.Email(u.FirstName, u.LastName))
             .RuleFor(u => u.Id, f => f.UniqueIndex)
-            .RuleFor(u=> u.Country, f=> f.Address.CountryCode()) 
+            .RuleFor(u => u.Country, f => f.Address.CountryCode())
             .RuleFor(u => u.EmploymentDate, f => f.Date.Past())
             //Use a method outside scope.
             //.RuleFor(u => u.CartId, f => Guid.NewGuid())
             //Compound property with context, use the first/last name properties
-            .RuleFor(u => u.DisplayName, (f, u) => u.FirstName + " " + u.LastName);
+            .RuleFor(u => u.DisplayName, (f, u) => u.FirstName + " " + u.LastName)
             //And composability of a complex collection.
-            //.RuleFor(u => u.Orders, f => testOrders.Generate(3).ToList())
-            //Optional: After all rules are applied finish with the following action
-            //.FinishWith((f, u) =>
-            //{
-            //    Console.WriteLine("User Created! Id={0}", u.Id);
-            //});
+            .RuleFor(u => u.Leaves, f => testLeaves.Generate(10).ToList());
+        //Optional: After all rules are applied finish with the following action
+        //.FinishWith((f, u) =>
+        //{
+        //    Console.WriteLine("User Created! Id={0}", u.Id);
+        //});
+      
 
         public static IQueryable<Employee> Data { get; } = testUsers.Generate(5000).AsQueryable(); 
 

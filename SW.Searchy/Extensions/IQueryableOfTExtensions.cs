@@ -78,7 +78,7 @@ namespace SW.Searchy
         {
             var param = Expression.Parameter(typeof(TEntity), "TEntity");
             var _parammany = Expression.Parameter(typeof(TRelated), "TRelated");
-            var _finalexp = _parammany.BuildConditionsExpression<TRelated>( conditions);
+            var _finalexp = _parammany.BuildConditionsExpression<TRelated>(conditions);
 
             if (_finalexp != null)
             {
@@ -114,7 +114,6 @@ namespace SW.Searchy
 
             return target;
 
-            //return target;
         }
 
         static IQueryable<TEntity> BuildOrderBy<U, TEntity>(this IQueryable<TEntity> query, SearchySort searchySort)
