@@ -8,7 +8,7 @@ using SW.PrimitiveTypes;
 namespace SW.Searchy.UnitTests
 {
     [TestClass]
-    public class UnitTest11
+    public class UnitTest
     {
 
         //[ClassInitialize]
@@ -92,7 +92,6 @@ namespace SW.Searchy.UnitTests
             var _data = FakeEmployees.Data.Search(_sc).ToList();
 
         }
-
         [TestMethod]
         public void SearchyMultipleConditions()
         {
@@ -102,6 +101,27 @@ namespace SW.Searchy.UnitTests
             var _data = FakeEmployees.Data.Search(new SearchyCondition[] { _sc1, _sc2 }).ToList();
         }
 
+
+        [TestMethod]
+        public void SearchyMany()
+        {
+            SearchyCondition _sc1 = new SearchyCondition($"{nameof(Leave.Days)}", SearchyRule.GreaterThan,7);
+
+            var data = FakeEmployees.Data.Search<Employee,Leave>("Leaves",new SearchyCondition[] { _sc1}).ToList();
+
+            Assert.AreEqual(FakeEmployees.Data.Where(s => s.Leaves.Any(l => l.Days > 7)).Count(), data.Count());
+        }
+
+
+        [TestMethod]
+        public void SearchyManyWithPaging()
+        {
+            SearchyCondition _sc1 = new SearchyCondition($"{nameof(Leave.Days)}", SearchyRule.GreaterThan, 7);
+
+            var data = FakeEmployees.Data.Search<Employee, Leave>("Leaves", new SearchyCondition[] { _sc1 }, new SearchySort[] { new SearchySort { Field = "Id", Sort = SearchySortOrder.DEC } },5).ToList();
+
+            Assert.AreEqual(5, data.Count());
+        }
 
     }
 }

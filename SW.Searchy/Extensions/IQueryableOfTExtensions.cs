@@ -71,11 +71,14 @@ namespace SW.Searchy
 
         public static IQueryable<TEntity> Search<TEntity, TRelated>(this IQueryable<TEntity> target,
             string navigationProperty,
-            IEnumerable<SearchyCondition> conditions)
+            IEnumerable<SearchyCondition> conditions,
+            IEnumerable<SearchySort> orders = null,
+            int pageSize = 0,
+            int pageIndex = 0)
         {
             var param = Expression.Parameter(typeof(TEntity), "TEntity");
             var _parammany = Expression.Parameter(typeof(TRelated), "TRelated");
-            var _finalexp = _parammany.BuildConditionsExpression<TRelated>( conditions);
+            var _finalexp = _parammany.BuildConditionsExpression<TRelated>(conditions);
 
             if (_finalexp != null)
             {
@@ -85,7 +88,32 @@ namespace SW.Searchy
                 target = target.Where(finalWherEexp);
             }
 
+            if (orders != null && orders.Count() > 0)
+            {
+                var mainOrderBy = orders.FirstOrDefault();
+                var mainSortMemberType = typeof(TEntity).GetProperty(mainOrderBy.Field, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance).PropertyType;
+
+                target = target.BuildOrderByThenBy(mainOrderBy, mainSortMemberType, true);
+
+                var searchySorts = new List<SearchySort>
+                {
+                    mainOrderBy
+                };
+
+                foreach (var searchySort in orders.Except(searchySorts.AsEnumerable()))
+                {
+                    var sortMemberType = typeof(TEntity).GetProperty(searchySort.Field, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance).PropertyType;
+                    target = target.BuildOrderByThenBy(searchySort, sortMemberType, false);
+                }
+            }
+
+            if (pageSize > 0 & pageIndex > 0)
+                target = target.Skip(pageIndex * pageSize).Take(pageSize);
+            else if (pageSize > 0)
+                target = target.Take(pageSize);
+
             return target;
+
         }
 
         static IQueryable<TEntity> BuildOrderBy<U, TEntity>(this IQueryable<TEntity> query, SearchySort searchySort)
