@@ -1,20 +1,25 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+[![Build Status](https://dev.azure.com/simplify9/Github%20Pipelines/_apis/build/status/simplify9.ExportToExcel?branchName=master)](https://dev.azure.com/simplify9/Github%20Pipelines/_build/latest?definitionId=168&branchName=master) 
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+![Azure DevOps tests](https://img.shields.io/azure-devops/tests/Simplify9/Github%20Pipelines/168?style=for-the-badge)
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+| **Package**       | **Version** |
+| :----------------:|:----------------------:|
+|```SimplyWorks.Searchy```| ![Nuget](https://img.shields.io/nuget/v/SimplyWorks.Searchy?style=for-the-badge)
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://www.visualstudio.com/en-us/docs/git/create-a-readme). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+## Searchy 
+*Searchy* is a library that enables a search function on IEnumerable types that build LINQ Expressions by taking conditions, sorting fields and paging instructions. 
+
+*Searchy* has a few extension methods that extend [IQueryable<T>](https://docs.microsoft.com/en-us/dotnet/api/system.linq.iqueryable-1?view=netcore-3.1), to help searchy filter, and sort, using Simplify9's classes.
+
+## Classes
+`Search<TEntity>` 
+`SearchyCondition`
+`SearchyFilter`
+`SearchySort`
+
+## Getting Started
+
+
+## Getting support 👷
+If you encounter any bugs, don't hesitate to submit an [issue](https://github.com/simplify9/Searchy/issues). We'll get back to you promptly!
